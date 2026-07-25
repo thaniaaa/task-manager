@@ -1,0 +1,2008 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Taskly - Personal Task Manager
+  </title>
+
+
+  <!-- Bootstrap Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+  >
+
+
+  <!-- Custom CSS -->
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
+
+</head>
+
+
+<body>
+
+
+<div class="app-shell">
+
+
+<!-- =====================================
+     SIDEBAR
+===================================== -->
+
+<aside class="sidebar">
+
+
+  <div class="sidebar__top">
+
+
+    <a
+      href="#"
+      class="brand"
+    >
+
+      <span class="brand__logo">
+
+        <i class="bi bi-check-lg"></i>
+
+      </span>
+
+
+      <span class="brand__name">
+        Taskly
+      </span>
+
+
+    </a>
+
+
+
+    <nav
+      class="sidebar-menu"
+      id="sidebarMenu"
+      aria-label="Main navigation"
+    >
+
+
+      <a
+        href="#"
+        class="
+        sidebar-menu__item 
+        sidebar-menu__item--active
+        "
+        data-view="dashboard"
+      >
+
+        <i class="bi bi-grid"></i>
+
+        <span>
+          Dashboard
+        </span>
+
+      </a>
+
+
+
+      <a
+        href="#"
+        class="sidebar-menu__item"
+        data-view="tasks"
+      >
+
+        <i class="bi bi-check2-square"></i>
+
+        <span>
+          My Tasks
+        </span>
+
+      </a>
+
+
+
+      <a
+        href="#"
+        class="sidebar-menu__item"
+        data-view="calendar"
+      >
+
+        <i class="bi bi-calendar3"></i>
+
+        <span>
+          Calendar
+        </span>
+
+      </a>
+
+
+
+      <a
+        href="#"
+        class="sidebar-menu__item"
+        data-view="completed"
+      >
+
+        <i class="bi bi-check-circle"></i>
+
+        <span>
+          Completed
+        </span>
+
+      </a>
+
+
+    </nav>
+
+
+  </div>
+
+
+  <div class="sidebar__footer">
+
+
+    <aside
+      class="sidebar-productivity-card"
+      aria-label="Productivity reminder"
+    >
+
+
+      <div class="sidebar-productivity-card__content">
+
+
+        <strong>
+          Stay productive
+        </strong>
+
+
+        <p>
+          Plan your day and complete more tasks!
+        </p>
+
+
+        <img
+          src="assets/images/pompurin.png"
+          alt=""
+          aria-hidden="true"
+        >
+
+
+      </div>
+
+
+    </aside>
+
+
+  </div>
+
+
+</aside>
+
+
+
+
+
+<!-- =====================================
+     MAIN APPLICATION
+===================================== -->
+
+<main class="app-main">
+
+
+
+<!-- TOPBAR -->
+
+<header class="topbar">
+
+
+<form
+ class="search-box"
+ id="searchTaskForm"
+>
+
+
+<i class="bi bi-search search-box__icon"></i>
+
+
+<input
+ id="searchTaskInput"
+ type="search"
+ placeholder="Search tasks..."
+ aria-label="Search tasks"
+ autocomplete="off"
+/>
+
+
+<span class="search-box__shortcut">
+/
+</span>
+
+
+</form>
+
+
+
+
+<div class="topbar-actions">
+
+
+<button
+ class="theme-button"
+ id="themeToggleButton"
+ type="button"
+>
+
+
+<i class="bi bi-sun"></i>
+
+
+<span>
+Light
+</span>
+
+
+</button>
+
+
+</div>
+
+
+</header>
+
+
+
+
+
+
+<!-- =====================================
+     DASHBOARD LAYOUT
+===================================== -->
+
+
+<div
+class="dashboard-layout"
+id="dashboardLayout"
+>
+
+
+
+<!-- =====================================
+     LEFT CONTENT
+===================================== -->
+
+
+<section
+class="dashboard-content"
+id="dashboardContent"
+>
+
+
+
+
+<!-- WELCOME -->
+
+<div
+class="welcome-section"
+id="welcomeSection"
+>
+
+
+
+<div>
+
+
+<h1 id="viewTitle">
+
+Welcome back, zipzip!
+
+</h1>
+
+
+
+<p id="viewSubtitle">
+
+Add your first task to get started.
+
+</p>
+
+
+</div>
+
+
+
+
+
+<button
+class="primary-button"
+id="openTaskModalButton"
+type="button"
+>
+
+
+<i class="bi bi-plus-lg"></i>
+
+
+<span>
+
+New Task
+
+</span>
+
+
+</button>
+
+
+
+</div>
+
+<!-- =====================================
+     ANALYTICS
+===================================== -->
+
+
+<section
+class="statistics-grid"
+id="statisticsSection"
+aria-label="Task statistics"
+>
+
+
+
+<!-- Total Tasks -->
+
+<article class="stat-card">
+
+
+<div class="stat-card__header">
+
+
+<div class="
+stat-card__icon 
+stat-card__icon--purple
+">
+
+<i class="bi bi-clipboard2-check"></i>
+
+</div>
+
+
+
+<div>
+
+<span class="stat-card__label">
+
+Total Tasks
+
+</span>
+
+
+<strong
+class="stat-card__number"
+id="totalTasksCount"
+>
+
+0
+
+</strong>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<div class="stat-card__footer">
+
+
+<span id="totalTasksInfo">
+
+No tasks yet
+
+</span>
+
+
+
+<div
+class="mini-chart"
+id="totalTasksChart"
+aria-hidden="true"
+></div>
+
+
+</div>
+
+
+</article>
+
+
+
+
+
+<!-- Completed -->
+
+<article class="stat-card">
+
+
+<div class="stat-card__header">
+
+
+<div class="
+stat-card__icon
+stat-card__icon--green
+">
+
+<i class="bi bi-check-circle"></i>
+
+</div>
+
+
+
+<div>
+
+
+<span class="stat-card__label">
+
+Completed
+
+</span>
+
+
+<strong
+class="stat-card__number"
+id="completedTasksCount"
+>
+
+0
+
+</strong>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="stat-card__footer">
+
+
+<span id="completedTasksInfo">
+
+0% completed
+
+</span>
+
+
+
+<div
+class="
+mini-chart
+mini-chart--green
+"
+id="completedTasksChart"
+aria-hidden="true"
+></div>
+
+
+</div>
+
+
+
+</article>
+
+
+
+
+
+<!-- In Progress -->
+
+<article class="stat-card">
+
+
+<div class="stat-card__header">
+
+
+<div class="
+stat-card__icon
+stat-card__icon--blue
+">
+
+<i class="bi bi-clock"></i>
+
+</div>
+
+
+
+<div>
+
+
+<span class="stat-card__label">
+
+In Progress
+
+</span>
+
+
+
+<strong
+class="stat-card__number"
+id="inProgressTasksCount"
+>
+
+0
+
+</strong>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="stat-card__footer">
+
+
+<span id="inProgressTasksInfo">
+
+No ongoing tasks
+
+</span>
+
+
+
+<div
+class="
+mini-chart
+mini-chart--blue
+"
+id="inProgressTasksChart"
+aria-hidden="true"
+></div>
+
+
+</div>
+
+
+</article>
+
+
+
+
+
+<!-- Overdue -->
+
+<article class="stat-card">
+
+
+<div class="stat-card__header">
+
+
+<div class="
+stat-card__icon
+stat-card__icon--red
+">
+
+<i class="bi bi-exclamation-circle"></i>
+
+</div>
+
+
+
+<div>
+
+
+<span class="stat-card__label">
+
+Overdue
+
+</span>
+
+
+
+<strong
+class="stat-card__number"
+id="overdueTasksCount"
+>
+
+0
+
+</strong>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="stat-card__footer">
+
+
+<span id="overdueTasksInfo">
+
+No overdue tasks
+
+</span>
+
+
+
+<div
+class="
+mini-chart
+mini-chart--red
+"
+id="overdueTasksChart"
+aria-hidden="true"
+></div>
+
+
+</div>
+
+
+</article>
+
+
+
+</section>
+
+
+
+
+
+<!-- =====================================
+     TASK PANEL
+===================================== -->
+
+
+<section
+id="tasksPanel"
+>
+
+
+
+<section
+class="task-toolbar"
+>
+
+
+
+
+
+<!-- FILTER TABS -->
+
+<div
+class="filter-tabs"
+id="taskFilterTabs"
+>
+
+
+
+<button
+class="
+filter-tab
+filter-tab--active
+"
+type="button"
+data-filter="all"
+>
+
+All
+
+</button>
+
+
+
+<button
+class="filter-tab"
+type="button"
+data-filter="today"
+>
+
+Today
+
+</button>
+
+
+
+<button
+class="filter-tab"
+type="button"
+data-filter="in-progress"
+>
+
+In Progress
+
+</button>
+
+
+
+<button
+class="filter-tab"
+type="button"
+data-filter="completed"
+>
+
+Completed
+
+</button>
+
+
+
+<button
+class="filter-tab"
+type="button"
+data-filter="high"
+>
+
+High Priority
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+<!-- TOOLBAR ACTION -->
+
+<div
+class="toolbar-actions"
+>
+
+
+
+
+
+<!-- FILTER DROPDOWN -->
+
+<div class="toolbar-dropdown">
+
+
+<button
+class="secondary-button"
+id="filterTaskButton"
+type="button"
+aria-expanded="false"
+>
+
+
+<i class="bi bi-funnel"></i>
+
+
+<span>
+Filter
+</span>
+
+
+<i class="bi bi-chevron-down"></i>
+
+
+</button>
+
+
+
+<div
+class="filter-menu"
+id="filterMenu"
+hidden
+>
+
+
+<div class="filter-menu__group">
+
+
+<label for="filterCategorySelect">
+
+Category
+
+</label>
+
+
+<select id="filterCategorySelect">
+
+
+<option value="all">
+All categories
+</option>
+
+
+<option value="Design">
+Design
+</option>
+
+
+<option value="Development">
+Development
+</option>
+
+
+<option value="Work">
+Work
+</option>
+
+
+<option value="Meeting">
+Meeting
+</option>
+
+
+<option value="Personal">
+Personal
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+<div class="filter-menu__group">
+
+
+<label for="filterPrioritySelect">
+
+Priority
+
+</label>
+
+
+<select id="filterPrioritySelect">
+
+
+<option value="all">
+All priorities
+</option>
+
+
+<option value="High">
+High
+</option>
+
+
+<option value="Medium">
+Medium
+</option>
+
+
+<option value="Low">
+Low
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+<div class="filter-menu__actions">
+
+
+<button
+class="cancel-button"
+id="resetFilterButton"
+type="button"
+>
+
+Reset
+
+</button>
+
+
+<button
+class="primary-button"
+id="applyFilterButton"
+type="button"
+>
+
+Apply
+
+</button>
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+<!-- SORT DROPDOWN -->
+
+<div class="toolbar-dropdown">
+
+
+<button
+class="secondary-button"
+id="sortTaskButton"
+type="button"
+aria-expanded="false"
+>
+
+
+<i class="bi bi-arrow-down-up"></i>
+
+
+<span>
+Sort
+</span>
+
+
+<i class="bi bi-chevron-down"></i>
+
+
+</button>
+
+
+
+
+<div
+class="filter-menu sort-menu"
+id="sortMenu"
+hidden
+>
+
+
+
+<div class="filter-menu__group">
+
+
+<label for="sortTaskSelect">
+
+Sort tasks by
+
+</label>
+
+
+
+<select id="sortTaskSelect">
+
+
+<option value="newest">
+
+Newest first
+
+</option>
+
+
+<option value="oldest">
+
+Oldest first
+
+</option>
+
+
+<option value="title-asc">
+
+Title A–Z
+
+</option>
+
+
+<option value="title-desc">
+
+Title Z–A
+
+</option>
+
+
+<option value="due-asc">
+
+Due date nearest
+
+</option>
+
+
+<option value="due-desc">
+
+Due date farthest
+
+</option>
+
+
+<option value="priority-high">
+
+Highest priority
+
+</option>
+
+
+<option value="priority-low">
+
+Lowest priority
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+<div class="filter-menu__actions">
+
+
+<button
+class="cancel-button"
+id="resetSortButton"
+type="button"
+>
+
+Reset
+
+</button>
+
+
+
+<button
+class="primary-button"
+id="applySortButton"
+type="button"
+>
+
+Apply
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<!-- =====================================
+     QUICK ADD
+===================================== -->
+
+
+<button
+class="quick-add-button"
+id="openQuickTaskModalButton"
+type="button"
+>
+
+
+<i class="bi bi-plus-lg"></i>
+
+
+<span>
+
+Add a task quickly...
+
+</span>
+
+
+</button>
+
+
+
+
+
+
+
+<!-- =====================================
+     TASK LIST
+===================================== -->
+
+
+<section
+class="task-list"
+id="taskList"
+aria-label="Task list"
+>
+
+
+
+<div
+class="task-empty"
+id="taskEmptyState"
+>
+
+
+<i class="bi bi-check2-square"></i>
+
+
+
+<h3>
+
+No tasks yet
+
+</h3>
+
+
+
+<p>
+
+Create your first task using the New Task button.
+
+</p>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- =====================================
+     PAGINATION
+===================================== -->
+
+
+<footer
+class="task-footer"
+>
+
+
+<p id="taskCountText">
+
+Showing 0–0 of 0 tasks
+
+</p>
+
+
+
+
+
+<nav
+class="pagination"
+id="taskPagination"
+aria-label="Task pagination"
+hidden
+>
+
+
+
+<button
+type="button"
+class="pagination__button"
+id="prevPageButton"
+aria-label="Previous page"
+disabled
+>
+
+
+<i class="bi bi-chevron-left"></i>
+
+
+</button>
+
+
+
+
+
+<div
+class="pagination__numbers"
+id="paginationNumbers"
+></div>
+
+
+
+
+
+<button
+type="button"
+class="pagination__button"
+id="nextPageButton"
+aria-label="Next page"
+disabled
+>
+
+
+<i class="bi bi-chevron-right"></i>
+
+
+</button>
+
+
+
+</nav>
+
+
+
+</footer>
+
+
+
+
+</section>
+
+<!-- =====================================
+     FULL CALENDAR VIEW
+===================================== -->
+
+
+<section
+class="calendar-full-view"
+id="calendarFullView"
+hidden
+>
+
+
+<section
+class="calendar-large widget"
+>
+
+
+
+<h2 class="widget__title">
+
+Calendar
+
+</h2>
+
+
+
+
+
+<div class="calendar-header">
+
+
+<button
+id="calendarPagePreviousButton"
+type="button"
+aria-label="Previous month"
+>
+
+<i class="bi bi-chevron-left"></i>
+
+</button>
+
+
+
+
+
+<strong
+id="calendarPageMonthLabel"
+>
+
+Calendar
+
+</strong>
+
+
+
+
+
+<button
+id="calendarPageNextButton"
+type="button"
+aria-label="Next month"
+>
+
+<i class="bi bi-chevron-right"></i>
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+<div
+class="
+calendar-days
+calendar-days--header
+"
+>
+
+
+<span>
+Mon
+</span>
+
+
+<span>
+Tue
+</span>
+
+
+<span>
+Wed
+</span>
+
+
+<span>
+Thu
+</span>
+
+
+<span>
+Fri
+</span>
+
+
+<span>
+Sat
+</span>
+
+
+<span>
+Sun
+</span>
+
+
+</div>
+
+
+
+
+
+<div
+class="calendar-days calendar-days--large"
+id="calendarPageDays"
+>
+
+
+</div>
+
+
+<section
+class="calendar-date-details calendar-date-details--large"
+id="calendarPageDateDetails"
+aria-live="polite"
+hidden
+></section>
+
+
+
+
+</section>
+
+
+</section>
+
+
+
+
+
+
+
+
+</section>
+<!-- END dashboard-content -->
+
+
+
+
+
+
+
+
+
+<!-- =====================================
+     RIGHT SIDEBAR
+===================================== -->
+
+
+<aside
+class="dashboard-aside"
+id="dashboardAside"
+>
+
+
+
+
+<!-- MINI CALENDAR -->
+
+<section
+class="widget calendar-widget"
+id="calendarWidget"
+>
+
+
+<h2 class="widget__title">
+
+Calendar
+
+</h2>
+
+
+
+
+<div class="calendar-header">
+
+
+<button
+id="previousMonthButton"
+type="button"
+aria-label="Previous month"
+>
+
+<i class="bi bi-chevron-left"></i>
+
+</button>
+
+
+
+
+
+<strong
+id="calendarMonthLabel"
+>
+
+Calendar
+
+</strong>
+
+
+
+
+
+<button
+id="nextMonthButton"
+type="button"
+aria-label="Next month"
+>
+
+<i class="bi bi-chevron-right"></i>
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+<div
+class="
+calendar-days
+calendar-days--header
+"
+>
+
+
+<span>
+Mon
+</span>
+
+
+<span>
+Tue
+</span>
+
+
+<span>
+Wed
+</span>
+
+
+<span>
+Thu
+</span>
+
+
+<span>
+Fri
+</span>
+
+
+<span>
+Sat
+</span>
+
+
+<span>
+Sun
+</span>
+
+
+</div>
+
+
+
+
+<div
+class="calendar-days"
+id="calendarDays"
+>
+
+
+</div>
+
+
+<section
+class="calendar-date-details"
+id="calendarDateDetails"
+aria-live="polite"
+hidden
+></section>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- UPCOMING DEADLINES -->
+
+
+<section
+class="widget deadline-widget"
+id="upcomingDeadlineWidget"
+>
+
+
+
+<div class="widget__heading">
+
+
+<h2 class="widget__title">
+
+Upcoming Deadlines
+
+</h2>
+
+
+
+<button
+class="widget-link-button"
+id="viewAllDeadlinesButton"
+type="button"
+>
+
+View all
+
+</button>
+
+
+
+</div>
+
+
+
+
+<div
+class="deadline-list"
+id="deadlineList"
+>
+
+
+
+<div
+class="deadline-empty"
+id="deadlineEmptyState"
+>
+
+
+<i class="bi bi-calendar2-check"></i>
+
+
+
+<p>
+
+No upcoming deadlines
+
+</p>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+</aside>
+
+
+
+
+
+
+</div>
+<!-- END dashboard-layout -->
+
+
+
+</main>
+
+</div>
+<!-- END app-shell -->
+
+
+
+
+
+
+
+
+
+<!-- =====================================
+     TASK MODAL
+===================================== -->
+ <div
+    class="modal"
+    id="taskModal"
+    aria-hidden="true"
+  >
+
+    <div
+      class="modal__overlay"
+      id="taskModalOverlay"
+    ></div>
+
+
+    <section
+      class="modal__dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="taskModalTitle"
+    >
+
+      <!-- Modal Header -->
+      <div class="modal__header">
+
+        <div>
+          <h2 id="taskModalTitle">
+            Add New Task
+          </h2>
+
+          <p>
+            Create a new task for your task list.
+          </p>
+        </div>
+
+
+        <button
+          class="modal__close-button"
+          id="closeTaskModalButton"
+          type="button"
+          aria-label="Close modal"
+        >
+          <i class="bi bi-x-lg"></i>
+        </button>
+
+      </div>
+
+
+      <!-- Task Form -->
+      <form
+        class="task-form"
+        id="taskForm"
+        novalidate
+      >
+
+        <!-- Task Title -->
+        <div class="form-group">
+
+          <label for="taskTitle">
+            Task title
+            <span aria-hidden="true">*</span>
+          </label>
+
+          <input
+            id="taskTitle"
+            name="title"
+            type="text"
+            placeholder="Example: Learn DOM manipulation"
+            autocomplete="off"
+          >
+
+          <small
+            class="form-error"
+            id="taskTitleError"
+          ></small>
+
+        </div>
+
+
+        <!-- Category and Priority -->
+        <div class="form-row">
+
+          <div class="form-group">
+
+            <label for="taskCategory">
+              Category
+            </label>
+
+            <select
+              id="taskCategory"
+              name="category"
+            >
+              <option value="">
+                Select category
+              </option>
+
+              <option value="Design">
+                Design
+              </option>
+
+              <option value="Development">
+                Development
+              </option>
+
+              <option value="Work">
+                Work
+              </option>
+
+              <option value="Meeting">
+                Meeting
+              </option>
+
+              <option value="Personal">
+                Personal
+              </option>
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="taskPriority">
+              Priority
+            </label>
+
+            <select
+              id="taskPriority"
+              name="priority"
+            >
+              <option value="Low">
+                Low
+              </option>
+
+              <option
+                value="Medium"
+                selected
+              >
+                Medium
+              </option>
+
+              <option value="High">
+                High
+              </option>
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <!-- Due Date and Status -->
+        <div class="form-row">
+
+          <div class="form-group">
+
+            <label for="taskDueDate">
+              Due date
+            </label>
+
+            <input
+              id="taskDueDate"
+              name="dueDate"
+              type="date"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="taskStatus">
+              Status
+            </label>
+
+            <select
+              id="taskStatus"
+              name="status"
+            >
+              <option value="todo">
+                To Do
+              </option>
+
+              <option value="in-progress">
+                In Progress
+              </option>
+
+              <option value="completed">
+                Completed
+              </option>
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <!-- Description -->
+        <div class="form-group">
+
+          <label for="taskDescription">
+            Description
+          </label>
+
+          <textarea
+            id="taskDescription"
+            name="description"
+            rows="4"
+            placeholder="Write additional information..."
+          ></textarea>
+
+        </div>
+
+
+        <!-- Form Actions -->
+        <div class="task-form__actions">
+
+          <button
+            class="cancel-button"
+            id="cancelTaskButton"
+            type="button"
+          >
+            Cancel
+          </button>
+
+
+          <button
+            class="primary-button"
+            id="submitTaskButton"
+            type="submit"
+          >
+            <i class="bi bi-plus-lg"></i>
+
+            <span>
+              Add Task
+            </span>
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+  </div>
+
+
+
+
+<!-- =====================================
+     TOAST
+===================================== -->
+
+
+<div
+class="toast"
+id="toast"
+role="status"
+aria-live="polite"
+>
+
+
+<div class="toast__icon">
+
+<i class="bi bi-check-lg"></i>
+
+</div>
+
+
+
+<div class="toast__content">
+
+
+<strong id="toastTitle">
+
+Success
+
+</strong>
+
+
+
+<span id="toastMessage">
+
+Task saved successfully.
+
+</span>
+
+
+
+</div>
+
+
+
+
+
+<button
+class="toast__close"
+id="closeToastButton"
+type="button"
+aria-label="Close notification"
+>
+
+
+<i class="bi bi-x"></i>
+
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+<script
+type="module"
+src="js/main.js"
+></script>
+
+
+</body>
+
+</html>
