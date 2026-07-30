@@ -130,6 +130,16 @@ export function renderTaskPagination() {
   dom.taskEmptyState.hidden =
     totalTasks > 0;
 
+  /*
+   * Quick Add hanya ditampilkan jika
+   * aplikasi benar-benar belum memiliki task.
+   * Hasil filter/search kosong tidak menampilkannya.
+   */
+  if (dom.quickAddSection) {
+    dom.quickAddSection.hidden =
+      allTaskItems.length > 0;
+  }
+
 
   const emptyTitle =
     dom.taskEmptyState?.querySelector(

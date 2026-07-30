@@ -27,6 +27,7 @@ import {
 import {
   updateDashboardWelcome,
 } from "./views.js";
+ "./modal.js";
 
 
 /* =========================================
@@ -443,6 +444,99 @@ export function createTaskElement(task) {
     taskDateText
   );
 
+  /* =====================================
+     DESCRIPTION PREVIEW
+  ===================================== */
+
+  const taskDescription =
+    document.createElement("div");
+
+  taskDescription.classList.add(
+    "task-description"
+  );
+
+
+  const descriptionText =
+    task.description?.trim() ||
+    "No description";
+
+
+  const descriptionButton =
+    document.createElement("button");
+
+  descriptionButton.type = "button";
+
+  descriptionButton.classList.add(
+    "task-description__trigger"
+  );
+
+  descriptionButton.setAttribute(
+    "aria-expanded",
+    "false"
+  );
+
+
+  const descriptionTooltipId =
+    `task-description-${task.id}`;
+
+  descriptionButton.setAttribute(
+    "aria-controls",
+    descriptionTooltipId
+  );
+
+  descriptionButton.setAttribute(
+    "aria-label",
+    `View description: ${descriptionText}`
+  );
+
+
+  const descriptionIcon =
+    document.createElement("i");
+
+  descriptionIcon.classList.add(
+    "bi",
+    "bi-card-text"
+  );
+
+
+  const descriptionPreview =
+    document.createElement("span");
+
+  descriptionPreview.textContent =
+    descriptionText;
+
+
+  const descriptionTooltip =
+    document.createElement("div");
+
+  descriptionTooltip.id =
+    descriptionTooltipId;
+
+  descriptionTooltip.classList.add(
+    "task-description__tooltip"
+  );
+
+  descriptionTooltip.setAttribute(
+    "role",
+    "tooltip"
+  );
+
+  descriptionTooltip.hidden = true;
+
+  descriptionTooltip.textContent =
+    descriptionText;
+
+
+  descriptionButton.append(
+    descriptionIcon,
+    descriptionPreview
+  );
+
+  taskDescription.append(
+    descriptionButton,
+    descriptionTooltip
+  );
+
 
   //task status
 
@@ -682,6 +776,7 @@ taskCheckbox.addEventListener(
     taskStatus,
     taskPriority,
     taskDate,
+    taskDescription,
     taskActions
   );
 
@@ -933,7 +1028,11 @@ export function handleTaskFormSubmit(
    */
   dom.taskForm.reset();
 
+  console.log("BEFORE CLOSE MODAL");
+
   closeTaskModal();
+
+  console.log("AFTER CLOSE MODAL")
 }
 
 
@@ -945,5 +1044,109 @@ export function setupTaskEvents() {
   dom.taskForm.addEventListener(
     "submit",
     handleTaskFormSubmit
+  );
+
+  /*
+   * Satu event terdelegasi untuk seluruh
+   * tooltip deskripsi task.
+   */
+  document.addEventListener(
+    "click",
+    function (event) {
+      const selectedDescription =
+        event.target.closest(
+          ".task-description"
+        );
+
+      const selectedTrigger =
+        event.target.closest(
+          ".task-description__trigger"
+        );
+
+      document
+        .querySelectorAll(
+          ".task-description__trigger[aria-expanded='true']"
+        )
+        .forEach(function (trigger) {
+          if (
+            trigger.parentElement ===
+            selectedDescription
+          ) {
+            return;
+          }
+
+          trigger.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+          const tooltip =
+            trigger.parentElement
+              ?.querySelector(
+                ".task-description__tooltip"
+              );
+
+          if (tooltip) {
+            tooltip.hidden = true;
+          }
+        });
+
+      if (!selectedTrigger) {
+        return;
+      }
+
+      const tooltip =
+        selectedTrigger.parentElement
+          ?.querySelector(
+            ".task-description__tooltip"
+          );
+
+      if (!tooltip) {
+        return;
+      }
+
+      const shouldOpen =
+        selectedTrigger.getAttribute(
+          "aria-expanded"
+        ) !== "true";
+
+      selectedTrigger.setAttribute(
+        "aria-expanded",
+        String(shouldOpen)
+      );
+
+      tooltip.hidden =
+        !shouldOpen;
+    }
+  );
+
+  document.addEventListener(
+    "keydown",
+    function (event) {
+      if (event.key !== "Escape") {
+        return;
+      }
+
+      document
+        .querySelectorAll(
+          ".task-description__trigger[aria-expanded='true']"
+        )
+        .forEach(function (trigger) {
+          trigger.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+          const tooltip =
+            trigger.parentElement
+              ?.querySelector(
+                ".task-description__tooltip"
+              );
+
+          if (tooltip) {
+            tooltip.hidden = true;
+          }
+        });
+    }
   );
 }

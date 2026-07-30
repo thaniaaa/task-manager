@@ -1,6 +1,11 @@
 import { dom } from "./dom.js";
 import { state } from "./state.js";
 
+
+import {
+  openAddTaskModal
+} from "./modal.js";
+
 import {
   formatDateForDisplay,
   formatDateToString,
@@ -82,22 +87,14 @@ function changeCalendarMonth(
   state.selectedCalendarDate = "";
 
   renderCalendar();
+  
 }
 
+function selectCalendarDate(date) {
 
-function selectCalendarDate(
-  date
-) {
   const dateString =
     formatDateToString(date);
 
-  if (!dateHasTask(dateString)) {
-    state.selectedCalendarDate = "";
-
-    renderCalendar();
-
-    return;
-  }
 
   state.calendarYear =
     date.getFullYear();
@@ -105,11 +102,12 @@ function selectCalendarDate(
   state.calendarMonth =
     date.getMonth();
 
+
   state.selectedCalendarDate =
-    state.selectedCalendarDate ===
-      dateString
+    state.selectedCalendarDate === dateString
       ? ""
       : dateString;
+
 
   renderCalendar();
 }
@@ -263,49 +261,63 @@ function generateCalendarDays() {
   return days;
 }
 
+function createDateTaskElement(task) {
 
-function createDateTaskElement(
-  task
-) {
   const item =
     document.createElement(
       "article"
     );
 
+
   item.classList.add(
     "calendar-date-task"
   );
 
+
   const content =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   const title =
     document.createElement(
       "strong"
     );
 
+
   title.textContent =
     task.title;
 
+
   const meta =
-    document.createElement("span");
+    document.createElement(
+      "span"
+    );
+
 
   meta.textContent =
     `${task.category || "Uncategorized"} · ${
       task.priority || "No priority"
     }`;
 
+
   content.append(
     title,
     meta
   );
 
+
   const status =
-    document.createElement("span");
+    document.createElement(
+      "span"
+    );
+
 
   status.classList.add(
     "calendar-date-task__status"
   );
+
 
   status.textContent =
     task.status === "completed"
@@ -314,12 +326,65 @@ function createDateTaskElement(
         ? "In Progress"
         : "To Do";
 
+
   item.append(
     content,
     status
   );
 
+
   return item;
+}
+
+function createAddTaskButton(
+  dateString
+) {
+
+  const button =
+    document.createElement(
+      "button"
+    );
+
+
+  button.type =
+    "button";
+
+
+  button.classList.add(
+    "primary-button",
+    "calendar-add-task-button"
+  );
+
+
+  button.innerHTML =
+    `
+    <i class="bi bi-plus"></i>
+    Add Task
+    `;
+
+
+  button.addEventListener(
+    "click",
+    function () {
+
+      //tutup popup detail calendar
+      state.selectedCalendarDate = "";
+
+      //refresh calendar agar pop up hilang
+      renderCalendar();
+
+      // buka modal task
+      openAddTaskModal(
+        dateString
+      );
+
+    }
+  );
+
+
+  return button;
+
+ 
 }
 
 
@@ -327,91 +392,163 @@ function renderDateDetails(
   container,
   daysContainer
 ) {
+
   if (!container) {
     return;
   }
 
+
   const selectedDate =
     state.selectedCalendarDate;
 
+
   container.replaceChildren();
+
+
   container.hidden =
     selectedDate === "";
+
 
   if (selectedDate === "") {
     return;
   }
 
+
+
   const heading =
     document.createElement("h3");
+
 
   heading.textContent =
     `Tasks due ${formatDateForDisplay(
       selectedDate
     )}`;
 
-  const tasks =
-    getTasksForDate(
-      selectedDate
-    );
 
-  if (tasks.length === 0) {
-    container.hidden = true;
-    return;
-  }
 
   const header =
     document.createElement("div");
+
 
   header.classList.add(
     "calendar-date-details__header"
   );
 
+
+
   const closeButton =
     document.createElement("button");
 
-  closeButton.type = "button";
+
+  closeButton.type =
+    "button";
+
+
   closeButton.classList.add(
     "calendar-date-details__close"
   );
 
-  closeButton.setAttribute(
-    "aria-label",
-    "Close task details"
-  );
 
   closeButton.innerHTML =
     '<i class="bi bi-x-lg"></i>';
 
+
+
   closeButton.addEventListener(
     "click",
     function () {
+
       state.selectedCalendarDate = "";
+
       renderCalendar();
+
     }
   );
+
 
   header.append(
     heading,
     closeButton
   );
 
-  container.append(header);
+
+
+  const tasks =
+    getTasksForDate(
+      selectedDate
+    );
+
+
+
+  /*
+    Jika tanggal belum memiliki task
+  */
+if (tasks.length === 0) {
+
+
+  const emptyMessage =
+    document.createElement(
+      "p"
+    );
+
+
+  emptyMessage.textContent =
+    "No tasks for this date";
+
+
+  container.append(
+    header,
+    emptyMessage,
+    createAddTaskButton(
+      selectedDate
+    )
+  );
+
+
+  positionDateDetails(
+    container,
+    daysContainer
+  );
+
+
+  return;
+
+}
+
+
+
+  /*
+    Jika tanggal memiliki task
+  */
+
+  container.append(
+    header
+  );
+
 
   tasks.forEach(
-    function (task) {
+    function(task){
+
       container.append(
         createDateTaskElement(task)
       );
     }
   );
 
+  //tombol hanya sekali
+  container.append(
+    createAddTaskButton(
+      selectedDate
+    )
+  );
+
+
   positionDateDetails(
     container,
     daysContainer
   );
-}
 
+}
 
 function positionDateDetails(
   container,

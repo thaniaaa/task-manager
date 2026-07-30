@@ -227,6 +227,11 @@ function resetViewLayout() {
   );
 
   setElementHidden(
+    dom.quickAddSection,
+    false
+  );
+
+  setElementHidden(
     dom.searchTaskForm,
     false
   );
@@ -358,6 +363,11 @@ function showCompletedView() {
 
   setElementHidden(
     dom.openQuickTaskModalButton,
+    true
+  );
+
+  setElementHidden(
+    dom.quickAddSection,
     true
   );
 
