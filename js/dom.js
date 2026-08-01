@@ -273,10 +273,6 @@ export const dom = {
       "#deadlineEmptyState"
     ),
 
-  viewAllDeadlinesButton:
-    document.querySelector(
-      "#viewAllDeadlinesButton"
-    ),
 
     /* Search */
 searchTaskForm:

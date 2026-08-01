@@ -5,6 +5,23 @@
 
   <meta charset="UTF-8">
 
+  <script>
+    try {
+      if (
+        localStorage.getItem(
+          "zipzip-theme"
+        ) === "dark"
+      ) {
+        document.documentElement
+          .classList.add(
+            "dark-theme-preload"
+          );
+      }
+    } catch {
+      /* Use the light theme when storage is unavailable. */
+    }
+  </script>
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
@@ -234,15 +251,14 @@ Light
 
 
 </button>
-
-<!-- <button
+<button
 class="primary-button"
 id="openTaskModalButton"
 type="button"
 >
 <i class="bi bi-plus-lg"></i>
 <span>New Task</span>
-</button> -->
+</button> 
 
 </div>
 
@@ -739,7 +755,7 @@ class="toolbar-actions"
 >
 
 <!-- NEW TASK BUTTON -->
-
+<!-- 
 <button
 class="primary-button new-task-button"
 id="openTaskModalButton"
@@ -752,7 +768,7 @@ type="button"
 New Task
 </span>
 
-</button>
+</button> -->
 
 
 
@@ -1577,7 +1593,7 @@ Upcoming Deadlines
 </h2>
 
 
-
+<!--
 <button
 class="widget-link-button"
 id="viewAllDeadlinesButton"
@@ -1586,7 +1602,7 @@ type="button"
 
 View all
 
-</button>
+</button> -->
 
 
 

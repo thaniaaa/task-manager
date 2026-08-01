@@ -1293,16 +1293,38 @@ a {
 ================================================== */
 
 .deadline-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  max-height:
+    230px;
+
+  overflow-y:
+    auto;
+
+  padding-right:
+    8px;
 }
 
+.deadlineList::-webkit-scrollbar {
+
+  width:6px;
+
+}
+
+
+.deadlineList::-webkit-scrollbar-thumb {
+
+  border-radius:10px;
+
+}
 .deadline-item {
-  display: grid;
-  grid-template-columns: 9px minmax(0, 1fr) auto;
-  align-items: start;
-  gap: 10px;
+  display:flex;
+
+  align-items:flex-start;
+
+  justify-content:space-between;
+
+  padding:
+
+  12px 0;
 }
 
 .deadline-item__dot {
@@ -4342,7 +4364,24 @@ task badge  */
 /* Upcoming deadline di calendar page */
 .dashboard-layout--calendar
 #upcomingDeadlinesWidget {
-  min-height: 220px;
+height: 100%;
+
+  min-height: 320px;
+
+  border:
+    1px solid #ead8ca;
+
+  border-radius:
+    20px;
+
+  background:
+    #ffffff;
+
+  padding:
+    24px;
+
+  box-sizing:
+    border-box;
 }
 
 
@@ -5396,7 +5435,18 @@ body.dark-theme .pagination button {
 
 .calendar-widget {
     padding: 24px;
-}
+
+    border:
+      1px solid #ead8ca;
+
+    border-radius:
+      20px;
+
+    background:
+      #ffffff;
+
+    margin-top: 24px;
+  }
 
 
 
@@ -5591,6 +5641,36 @@ body.dark-theme .pagination button {
 .dashboard-layout:not(.dashboard-layout--single) .statistics-grid,
 .dashboard-layout:not(.dashboard-layout--single) #tasksPanel {
   grid-column: 1 / -1;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) #tasksPanel {
+
+  grid-column: 1 / -1;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr);
+
+  grid-template-rows:
+    auto auto auto;
+
+
+  padding: 24px;
+
+
+  border:
+    1px solid #ead8ca;
+
+
+  border-radius:
+    20px;
+
+
+  background:
+    #ffffff;
+
+
 }
 
 .dashboard-layout:not(.dashboard-layout--single) .welcome-section {
@@ -5845,11 +5925,6 @@ body.dark-theme .dashboard-mascot-card {
   font-size: 22px;
 }
 
-.dashboard-layout:not(.dashboard-layout--single) #tasksPanel {
-  grid-template-columns: minmax(0, 3fr) minmax(250px, 1fr);
-  grid-template-rows: auto auto auto;
-  column-gap: 0;
-}
 
 .dashboard-layout:not(.dashboard-layout--single) .task-toolbar {
   grid-column: 1 / -1;
@@ -5960,10 +6035,6 @@ body.dark-theme .dashboard-mascot-card {
   }
 }
 
-/* Quick Add belongs to the genuine empty state only. */
-.dashboard-layout:not(.dashboard-layout--single) #tasksPanel {
-  grid-template-columns: minmax(0, 1fr);
-}
 
 .dashboard-layout:not(.dashboard-layout--single) .task-list {
   grid-column: 1;
@@ -6459,22 +6530,128 @@ body.dark-theme
 ================================================== */
 
 .task-empty {
-  display: grid;
-  grid-template-columns:
-    auto minmax(0, 1fr);
-  align-items: start;
-  column-gap: 10px;
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  gap: 8px;
+
+  min-height: 180px;
+
 }
 
 .task-empty > i {
-  grid-row: 1 / span 2;
-  margin-top: 4px;
+  margin-bottom: 8px;
 }
 
-.task-empty > h3,
-.task-empty > p {
-  grid-column: 2;
+.task-empty > h3 {
+  margin: 0;
 }
+.task-empty > p {
+  margin: 0;
+  max-width: 350px;
+}
+
+.quick-add-section {
+
+  display: flex;
+
+  justify-content: center;
+
+  margin-top: 16px;
+
+}
+
+
+.quick-add-section input,
+.quick-add-section button {
+
+  border: 1px solid #dfc7b5;
+
+  background: #ffffff;
+
+  border-radius: 12px;
+
+}
+
+
+/* ==================================================
+   CLEAN TASK CARD BORDER
+================================================== */
+
+.dashboard-layout:not(.dashboard-layout--single) .task-toolbar {
+  margin-bottom: 12px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .task-list {
+  margin: 0;
+  padding: 16px 20px 8px;
+  overflow: visible;
+  border: 1px solid var(--color-border);
+  border-bottom: 0;
+  border-radius: 14px 14px 0 0;
+  background: var(--color-surface);
+  box-shadow: none;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .task-footer {
+  min-height: 44px;
+  margin: 0;
+  padding: 10px 20px 12px;
+  border: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border);
+  border-radius: 0 0 14px 14px;
+  background: var(--color-surface);
+  box-shadow: none;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .task-empty {
+  width: 100%;
+  min-height: 180px;
+  padding: 18px 20px 14px;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .task-empty .quick-add-section {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 10px 0 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .task-empty .quick-add-button {
+  width: min(100%, 400px);
+  border: 1px solid var(--color-border);
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .task-list::before {
+  margin-bottom: 10px;
+}
+
+body.dark-theme
+.dashboard-layout:not(.dashboard-layout--single)
+.task-list,
+body.dark-theme
+.dashboard-layout:not(.dashboard-layout--single)
+.task-footer {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+}
+
 
 .calendar-widget,
 .calendar-large {
@@ -6718,4 +6895,762 @@ body.dark-theme
 
 .calendar-date-task span {
   display:block;
+}
+
+
+/* =========================================
+   DASHBOARD SPACING AND WIDGET ALIGNMENT
+========================================= */
+
+.dashboard-layout:not(.dashboard-layout--single) .statistics-grid {
+  margin-bottom: 8px;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) #tasksPanel {
+  row-gap: 0;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .task-toolbar {
+  margin-top: 4px;
+  margin-bottom: 14px;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) #calendarWidget,
+.dashboard-layout:not(.dashboard-layout--single) .dashboard-side-stack {
+  align-self: start;
+  margin-top: 10px;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) #calendarWidget {
+  height: auto;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .dashboard-side-stack {
+  width: 100%;
+}
+
+.dashboard-layout:not(.dashboard-layout--single)
+.dashboard-side-stack
+> .widget:first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 1100px) {
+  .dashboard-layout:not(.dashboard-layout--single) #calendarWidget,
+  .dashboard-layout:not(.dashboard-layout--single) .dashboard-side-stack {
+    margin-top: 6px;
+  }
+}
+
+
+/* =========================================
+   SINGLE TASK PANEL CARD
+========================================= */
+
+.dashboard-layout:not(.dashboard-layout--single) #tasksPanel {
+  row-gap: 0;
+  margin-top: 4px;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .task-toolbar {
+  margin: 0;
+  padding: 6px 12px;
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .task-list {
+  margin: 0;
+  padding: 16px 20px 8px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .task-footer {
+  margin: 0;
+  padding: 10px 20px 12px;
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.dashboard-layout:not(.dashboard-layout--single)
+.task-empty
+.quick-add-section,
+.dashboard-layout:not(.dashboard-layout--single)
+.task-empty
+.quick-add-button {
+  box-shadow: none;
+}
+
+body.dark-theme
+.dashboard-layout:not(.dashboard-layout--single)
+#tasksPanel {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+}
+
+
+/* Toolbar floats above the single Tasks card. */
+.dashboard-layout:not(.dashboard-layout--single) #tasksPanel {
+  margin-top: 4px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .task-toolbar {
+  margin: 0 0 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .task-list {
+  border: 1px solid var(--color-border);
+  border-bottom: 0;
+  border-radius: 14px 14px 0 0;
+  background: var(--color-surface);
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .task-footer {
+  border: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border);
+  border-radius: 0 0 14px 14px;
+  background: var(--color-surface);
+}
+
+body.dark-theme
+.dashboard-layout:not(.dashboard-layout--single)
+#tasksPanel {
+  background: transparent;
+}
+
+
+/* Full-width empty-state action without footer divider. */
+.dashboard-layout:not(.dashboard-layout--single)
+.task-empty
+.quick-add-section {
+  align-self: stretch;
+  width: 100%;
+  margin: 12px 0 0;
+}
+
+.dashboard-layout:not(.dashboard-layout--single)
+.task-empty
+.quick-add-button {
+  width: 100%;
+  max-width: none;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .task-footer {
+  border-top: 0;
+}
+
+
+.upcoming-deadline-list {
+
+  max-height: 320px;
+
+  overflow-y: auto;
+
+}
+
+.upcoming-deadline-list {
+
+  scrollbar-width: thin;
+
+}
+
+
+.upcoming-deadline-list::-webkit-scrollbar {
+
+  width: 6px;
+
+}
+
+
+.upcoming-deadline-list::-webkit-scrollbar-thumb {
+
+  border-radius: 10px;
+
+}
+
+.upcoming-deadline-header {
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-bottom:20px;
+
+}
+
+
+.upcoming-deadline-header h2 {
+
+  margin:0;
+
+}
+
+.deadline-widget {
+
+  height: 100%;
+
+  min-height: 320px;
+
+  border:
+    1px solid #ead8ca;
+
+  border-radius:
+    20px;
+
+  background:
+    #ffffff;
+
+  padding:
+    24px;
+
+  box-sizing:
+    border-box;
+
+}
+
+.widget__heading {
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  margin-bottom:20px;
+
+}
+
+
+.widget__title {
+
+  margin:0;
+
+}
+
+.deadline-list {
+
+  max-height:
+    220px;
+
+  overflow-y:
+    auto;
+
+  padding-right:
+    8px;
+
+}
+.deadline-list::-webkit-scrollbar {
+
+  width:6px;
+
+}
+
+
+.deadline-list::-webkit-scrollbar-thumb {
+
+  border-radius:10px;
+
+}
+
+.deadline-empty {
+
+  height:220px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:center;
+
+  align-items:center;
+
+  text-align:center;
+
+  gap:12px;
+
+}
+.dashboard-side-stack {
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:24px;
+
+}
+
+
+/* ==================================================
+   FULL-SCREEN SHELL AND BALANCED DASHBOARD WIDGETS
+================================================== */
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  background: #fffaf6 !important;
+}
+
+body {
+  padding: 0 !important;
+}
+
+.app-shell {
+  width: 100%;
+  max-width: none;
+  min-height: 100vh;
+  margin: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: #fffaf6 !important;
+  box-shadow: none !important;
+}
+
+.app-main,
+.dashboard-layout {
+  min-width: 0;
+  background: #fffaf6 !important;
+}
+
+.topbar {
+  background: rgba(255, 250, 246, 0.96) !important;
+}
+
+.sidebar {
+  position: sticky;
+  z-index: 60;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.stat-card,
+.widget,
+.task-list,
+.task-footer {
+  border-color: #ead8ca !important;
+  background-color: #ffffff;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) {
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr))
+    minmax(280px, 0.9fr);
+}
+
+.dashboard-layout:not(.dashboard-layout--single) #calendarWidget,
+.dashboard-layout:not(.dashboard-layout--single) .dashboard-side-stack {
+  align-self: stretch;
+  height: 420px;
+  margin-top: 10px;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) #calendarWidget {
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .dashboard-side-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .deadline-widget {
+  flex: 0 0 220px;
+  min-height: 0;
+  height: 220px;
+  padding: 18px;
+  border-color: #ead8ca;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .deadline-widget .widget__heading {
+  margin-bottom: 10px;
+}
+
+.deadline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-height: none;
+  padding-right: 2px;
+  overflow: visible;
+  scrollbar-width: thin;
+  scrollbar-color: #d8aa86 transparent;
+}
+
+.deadline-list--scrollable {
+  max-height: 156px;
+  padding-right: 7px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.deadline-item {
+  grid-template-columns: 8px minmax(0, 1fr) auto;
+  min-height: 52px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f1e6de;
+}
+
+.deadline-item:last-child {
+  border-bottom: 0;
+}
+
+.deadline-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.deadline-list::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: #d8aa86;
+}
+
+.deadline-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.deadline-empty {
+  height: 145px;
+  min-height: 0;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .dashboard-mascot-card {
+  flex: 1 1 auto;
+  min-height: 0;
+  border-color: #ead8ca;
+  border-radius: 16px;
+  background:
+    linear-gradient(145deg, #fff8ee 0%, #f9e3d4 100%);
+}
+
+body.dark-theme,
+body.dark-theme .app-shell,
+body.dark-theme .app-main,
+body.dark-theme .dashboard-layout,
+body.dark-theme .topbar {
+  background: #201b18 !important;
+}
+
+@media (max-width: 1100px) {
+  .dashboard-layout:not(.dashboard-layout--single) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dashboard-layout:not(.dashboard-layout--single) #calendarWidget,
+  .dashboard-layout:not(.dashboard-layout--single) .dashboard-side-stack {
+    grid-column: 1 / -1;
+    height: auto;
+    margin-top: 6px;
+  }
+
+  .dashboard-layout:not(.dashboard-layout--single) .dashboard-side-stack {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .sidebar {
+    height: auto;
+    overflow: visible;
+  }
+
+  .dashboard-layout:not(.dashboard-layout--single) .dashboard-side-stack {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ==================================================
+   DASHBOARD SECTION ORDER
+================================================== */
+
+.dashboard-layout:not(.dashboard-layout--single) .welcome-section {
+  grid-row: 1;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .statistics-grid {
+  grid-row: 2;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) #calendarWidget {
+  grid-column: 1 / 4;
+  grid-row: 3;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) .dashboard-side-stack {
+  grid-column: 4;
+  grid-row: 3;
+}
+
+.dashboard-layout:not(.dashboard-layout--single) #tasksPanel {
+  grid-column: 1 / -1;
+  grid-row: 4;
+  margin-top: 8px;
+}
+
+.dashboard-side-stack > .deadline-widget,
+.dashboard-side-stack > .dashboard-mascot-card {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+/* ==================================================
+   CALENDAR NAVIGATION POLISH
+================================================== */
+
+.calendar-header button {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  box-shadow: 0 3px 10px rgba(74, 45, 29, 0.06);
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.calendar-header button i {
+  display: block;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.calendar-header button:hover {
+  color: #ffffff;
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  box-shadow: 0 6px 16px rgba(208, 120, 59, 0.24);
+  transform: translateY(-1px);
+}
+
+.calendar-header button:active {
+  box-shadow: 0 2px 8px rgba(208, 120, 59, 0.2);
+  transform: translateY(0) scale(0.94);
+}
+
+.calendar-header button:focus-visible {
+  outline: 3px solid rgba(208, 120, 59, 0.22);
+  outline-offset: 2px;
+}
+
+.calendar-day {
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    transform 150ms ease;
+}
+
+.calendar-day:hover {
+  transform: translateY(-1px);
+}
+
+.calendar-days--enter-next {
+  animation: calendar-enter-next 180ms ease-out;
+}
+
+.calendar-days--enter-previous {
+  animation: calendar-enter-previous 180ms ease-out;
+}
+
+@keyframes calendar-enter-next {
+  from {
+    opacity: 0.35;
+    transform: translateX(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes calendar-enter-previous {
+  from {
+    opacity: 0.35;
+    transform: translateX(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .calendar-header button,
+  .calendar-day,
+  .calendar-days--enter-next,
+  .calendar-days--enter-previous {
+    transition: none;
+    animation: none;
+  }
+}
+
+
+/* ==================================================
+   COMPLETE DARK THEME AND FIRST-PAINT STABILITY
+================================================== */
+
+html.dark-theme-preload {
+  color-scheme: dark;
+  background: #181411;
+}
+
+html.dark-theme-preload body,
+html.dark-theme-preload .app-shell,
+html.dark-theme-preload .app-main,
+html.dark-theme-preload .dashboard-layout,
+html.dark-theme-preload .topbar {
+  color: #f6eee8 !important;
+  background: #181411 !important;
+}
+
+html.dark-theme-preload *,
+html.dark-theme-preload *::before,
+html.dark-theme-preload *::after {
+  transition: none !important;
+}
+
+body.dark-theme {
+  --color-background: #181411;
+  --color-surface: #28211d;
+  --color-surface-soft: #302722;
+  --color-border: #58483e;
+  --color-text: #f7f0ea;
+  --color-text-muted: #cbbcb1;
+  --color-primary-light: #533223;
+  color-scheme: dark;
+}
+
+body.dark-theme .app-shell,
+body.dark-theme .app-main,
+body.dark-theme .dashboard-layout,
+body.dark-theme .topbar {
+  color: var(--color-text);
+  background: var(--color-background) !important;
+}
+
+body.dark-theme .stat-card,
+body.dark-theme .widget,
+body.dark-theme .task-list,
+body.dark-theme .task-footer,
+body.dark-theme .deadline-widget,
+body.dark-theme .theme-button,
+body.dark-theme .secondary-button,
+body.dark-theme .filter-tab,
+body.dark-theme .search-box input,
+body.dark-theme .task-description__trigger,
+body.dark-theme .task-description__tooltip,
+body.dark-theme .calendar-header button {
+  color: var(--color-text);
+  border-color: var(--color-border) !important;
+  background: var(--color-surface) !important;
+}
+
+body.dark-theme .stat-card__label,
+body.dark-theme .stat-card__footer,
+body.dark-theme .welcome-section p,
+body.dark-theme .task-date,
+body.dark-theme .task-footer,
+body.dark-theme .deadline-item__content span,
+body.dark-theme .calendar-days--header,
+body.dark-theme .calendar-day--muted {
+  color: var(--color-text-muted) !important;
+}
+
+body.dark-theme .widget__title,
+body.dark-theme .deadline-item__content strong,
+body.dark-theme .calendar-header strong,
+body.dark-theme .calendar-day,
+body.dark-theme .task-item__title {
+  color: var(--color-text);
+}
+
+body.dark-theme .deadline-item {
+  border-bottom-color: #45382f;
+}
+
+body.dark-theme .dashboard-mascot-card {
+  color: var(--color-text);
+  border-color: var(--color-border);
+  background:
+    linear-gradient(145deg, #342821 0%, #493126 100%);
+}
+
+body.dark-theme .dashboard-mascot-card p {
+  color: var(--color-text-muted);
+}
+
+body.dark-theme .calendar-header button:hover {
+  color: #ffffff;
+  border-color: var(--color-primary) !important;
+  background: var(--color-primary) !important;
+}
+
+body.dark-theme .calendar-day:hover {
+  color: #ffffff;
+  background: #4a3327;
+}
+
+body.dark-theme .calendar-day--active,
+body.dark-theme .calendar-day--selected {
+  color: #ffffff !important;
+  background: var(--color-primary) !important;
+}
+
+@media (max-width: 1100px) {
+  .dashboard-layout:not(.dashboard-layout--single) #calendarWidget,
+  .dashboard-layout:not(.dashboard-layout--single) .dashboard-side-stack {
+    grid-column: 1 / -1;
+  }
+
+  .dashboard-layout:not(.dashboard-layout--single) #calendarWidget {
+    grid-row: 3;
+  }
+
+  .dashboard-layout:not(.dashboard-layout--single) .dashboard-side-stack {
+    grid-row: 4;
+  }
+
+  .dashboard-layout:not(.dashboard-layout--single) #tasksPanel {
+    grid-row: 5;
+  }
 }

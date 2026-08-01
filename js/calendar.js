@@ -87,7 +87,51 @@ function changeCalendarMonth(
   state.selectedCalendarDate = "";
 
   renderCalendar();
+
+  animateCalendarChange(
+    monthDifference
+  );
   
+}
+
+
+function animateCalendarChange(
+  monthDifference
+) {
+  const animationClass =
+    monthDifference > 0
+      ? "calendar-days--enter-next"
+      : "calendar-days--enter-previous";
+
+  [
+    dom.calendarDays,
+    dom.calendarFullDays,
+  ].forEach(function (calendarGrid) {
+    if (!calendarGrid) {
+      return;
+    }
+
+    calendarGrid.classList.remove(
+      "calendar-days--enter-next",
+      "calendar-days--enter-previous"
+    );
+
+    void calendarGrid.offsetWidth;
+
+    calendarGrid.classList.add(
+      animationClass
+    );
+
+    calendarGrid.addEventListener(
+      "animationend",
+      function () {
+        calendarGrid.classList.remove(
+          animationClass
+        );
+      },
+      { once: true }
+    );
+  });
 }
 
 function selectCalendarDate(date) {
