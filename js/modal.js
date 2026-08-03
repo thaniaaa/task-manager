@@ -86,8 +86,12 @@ export function openTaskModal() {
 }
 
 
-export function openAddTaskModal() {
+export function openAddTaskModal(selectedDate = "") {
   setAddTaskMode();
+
+  if (selectedDate &&  dom.taskDueDateInput ) { 
+    dom.taskDueDateInput.value = selectedDate;
+  }
 
   openTaskModal();
 }
@@ -110,7 +114,7 @@ export function closeTaskModal() {
     "true"
   );
 
-  setAddTaskMode();
+ 
 }
 
 
@@ -174,3 +178,4 @@ export function setupModalEvents() {
     }
   );
 }
+

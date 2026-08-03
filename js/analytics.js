@@ -20,12 +20,19 @@ function setTextContent(
 
 
 export function updateTaskAnalytics() {
+  const activeTasks =
+    state.tasks.filter(
+      function (task) {
+        return !task.archived;
+      }
+    );
+
   const totalTasks =
-    state.tasks.length;
+    activeTasks.length;
 
 
   const completedTasks =
-    state.tasks.filter(
+    activeTasks.filter(
       function (task) {
         return (
           task.status === "completed"
@@ -35,7 +42,7 @@ export function updateTaskAnalytics() {
 
 
   const inProgressTasks =
-    state.tasks.filter(
+    activeTasks.filter(
       function (task) {
         return (
           task.status === "in-progress"
@@ -49,7 +56,7 @@ export function updateTaskAnalytics() {
 
 
   const overdueTasks =
-    state.tasks.filter(
+    activeTasks.filter(
       function (task) {
         const hasDueDate =
           task.dueDate !== "";

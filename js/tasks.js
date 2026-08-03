@@ -28,6 +28,11 @@ import {
   updateDashboardWelcome,
 } from "./views.js";
 
+import {
+  saveTasks,
+} from "./storage.js";
+ "./modal.js";
+
 
 /* =========================================
    CLASS KATEGORI
@@ -144,6 +149,8 @@ const priorityClassMap = {
 ========================================= */
 
 function refreshTaskViews() {
+  saveTasks(state.tasks);
+
   updateTaskAnalytics();
 
   updateDashboardWelcome();
@@ -345,6 +352,14 @@ export function createTaskElement(task) {
       task.description || ""
     ).toLowerCase();
 
+  taskItem.dataset.archived =
+    String(Boolean(task.archived));
+
+  taskItem.classList.toggle(
+    "task-item--archived",
+    Boolean(task.archived)
+  );
+
 
   /* =====================================
      CHECKBOX DAN JUDUL
@@ -441,6 +456,99 @@ export function createTaskElement(task) {
   taskDate.append(
     taskDateIcon,
     taskDateText
+  );
+
+  /* =====================================
+     DESCRIPTION PREVIEW
+  ===================================== */
+
+  const taskDescription =
+    document.createElement("div");
+
+  taskDescription.classList.add(
+    "task-description"
+  );
+
+
+  const descriptionText =
+    task.description?.trim() ||
+    "No description";
+
+
+  const descriptionButton =
+    document.createElement("button");
+
+  descriptionButton.type = "button";
+
+  descriptionButton.classList.add(
+    "task-description__trigger"
+  );
+
+  descriptionButton.setAttribute(
+    "aria-expanded",
+    "false"
+  );
+
+
+  const descriptionTooltipId =
+    `task-description-${task.id}`;
+
+  descriptionButton.setAttribute(
+    "aria-controls",
+    descriptionTooltipId
+  );
+
+  descriptionButton.setAttribute(
+    "aria-label",
+    `View description: ${descriptionText}`
+  );
+
+
+  const descriptionIcon =
+    document.createElement("i");
+
+  descriptionIcon.classList.add(
+    "bi",
+    "bi-card-text"
+  );
+
+
+  const descriptionPreview =
+    document.createElement("span");
+
+  descriptionPreview.textContent =
+    descriptionText;
+
+
+  const descriptionTooltip =
+    document.createElement("div");
+
+  descriptionTooltip.id =
+    descriptionTooltipId;
+
+  descriptionTooltip.classList.add(
+    "task-description__tooltip"
+  );
+
+  descriptionTooltip.setAttribute(
+    "role",
+    "tooltip"
+  );
+
+  descriptionTooltip.hidden = true;
+
+  descriptionTooltip.textContent =
+    descriptionText;
+
+
+  descriptionButton.append(
+    descriptionIcon,
+    descriptionPreview
+  );
+
+  taskDescription.append(
+    descriptionButton,
+    descriptionTooltip
   );
 
 
@@ -566,6 +674,47 @@ const taskPriority =
     '<i class="bi bi-trash3"></i>';
 
 
+  /*
+   * Tombol Archive / Restore.
+   */
+  const archiveButton =
+    document.createElement("button");
+
+  archiveButton.type = "button";
+
+  archiveButton.classList.add(
+    "task-action",
+    "task-action--archive"
+  );
+
+  const taskIsArchived =
+    Boolean(task.archived);
+
+  archiveButton.setAttribute(
+    "aria-label",
+    taskIsArchived
+      ? "Restore task from archive"
+      : "Archive task"
+  );
+
+  archiveButton.setAttribute(
+    "title",
+    taskIsArchived
+      ? "Restore task"
+      : "Archive task"
+  );
+
+  archiveButton.innerHTML =
+    taskIsArchived
+      ? '<i class="bi bi-arrow-counterclockwise"></i>'
+      : '<i class="bi bi-archive"></i>';
+
+  archiveButton.classList.toggle(
+    "task-action--restore",
+    taskIsArchived
+  );
+
+
   /* =====================================
      STATUS AWAL
   ===================================== */
@@ -660,6 +809,49 @@ taskCheckbox.addEventListener(
   );
 
 
+  archiveButton.addEventListener(
+    "click",
+    function () {
+      task.archived =
+        !Boolean(task.archived);
+
+      taskItem.dataset.archived =
+        String(task.archived);
+
+      taskItem.classList.toggle(
+        "task-item--archived",
+        task.archived
+      );
+
+      archiveButton.classList.toggle(
+        "task-action--restore",
+        task.archived
+      );
+
+      archiveButton.setAttribute(
+        "aria-label",
+        task.archived
+          ? "Restore task from archive"
+          : "Archive task"
+      );
+
+      archiveButton.setAttribute(
+        "title",
+        task.archived
+          ? "Restore task"
+          : "Archive task"
+      );
+
+      archiveButton.innerHTML =
+        task.archived
+          ? '<i class="bi bi-arrow-counterclockwise"></i>'
+          : '<i class="bi bi-archive"></i>';
+
+      refreshTaskViews();
+    }
+  );
+
+
   /* =====================================
      MENYUSUN ELEMEN
   ===================================== */
@@ -671,6 +863,7 @@ taskCheckbox.addEventListener(
 
 
   taskActions.append(
+    archiveButton,
     editButton,
     deleteButton
   );
@@ -682,6 +875,7 @@ taskCheckbox.addEventListener(
     taskStatus,
     taskPriority,
     taskDate,
+    taskDescription,
     taskActions
   );
 
@@ -839,6 +1033,8 @@ function createNewTask(
 
     description:
       taskFormData.description,
+
+    archived: false,
   };
 
 
@@ -933,7 +1129,11 @@ export function handleTaskFormSubmit(
    */
   dom.taskForm.reset();
 
+  console.log("BEFORE CLOSE MODAL");
+
   closeTaskModal();
+
+  console.log("AFTER CLOSE MODAL")
 }
 
 
@@ -945,5 +1145,109 @@ export function setupTaskEvents() {
   dom.taskForm.addEventListener(
     "submit",
     handleTaskFormSubmit
+  );
+
+  /*
+   * Satu event terdelegasi untuk seluruh
+   * tooltip deskripsi task.
+   */
+  document.addEventListener(
+    "click",
+    function (event) {
+      const selectedDescription =
+        event.target.closest(
+          ".task-description"
+        );
+
+      const selectedTrigger =
+        event.target.closest(
+          ".task-description__trigger"
+        );
+
+      document
+        .querySelectorAll(
+          ".task-description__trigger[aria-expanded='true']"
+        )
+        .forEach(function (trigger) {
+          if (
+            trigger.parentElement ===
+            selectedDescription
+          ) {
+            return;
+          }
+
+          trigger.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+          const tooltip =
+            trigger.parentElement
+              ?.querySelector(
+                ".task-description__tooltip"
+              );
+
+          if (tooltip) {
+            tooltip.hidden = true;
+          }
+        });
+
+      if (!selectedTrigger) {
+        return;
+      }
+
+      const tooltip =
+        selectedTrigger.parentElement
+          ?.querySelector(
+            ".task-description__tooltip"
+          );
+
+      if (!tooltip) {
+        return;
+      }
+
+      const shouldOpen =
+        selectedTrigger.getAttribute(
+          "aria-expanded"
+        ) !== "true";
+
+      selectedTrigger.setAttribute(
+        "aria-expanded",
+        String(shouldOpen)
+      );
+
+      tooltip.hidden =
+        !shouldOpen;
+    }
+  );
+
+  document.addEventListener(
+    "keydown",
+    function (event) {
+      if (event.key !== "Escape") {
+        return;
+      }
+
+      document
+        .querySelectorAll(
+          ".task-description__trigger[aria-expanded='true']"
+        )
+        .forEach(function (trigger) {
+          trigger.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+          const tooltip =
+            trigger.parentElement
+              ?.querySelector(
+                ".task-description__tooltip"
+              );
+
+          if (tooltip) {
+            tooltip.hidden = true;
+          }
+        });
+    }
   );
 }

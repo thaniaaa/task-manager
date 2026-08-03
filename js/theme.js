@@ -75,6 +75,10 @@ function applyTheme(theme) {
     isDarkTheme
   );
 
+  document.documentElement.classList.remove(
+    "dark-theme-preload"
+  );
+
   updateThemeButton(
     isDarkTheme
   );

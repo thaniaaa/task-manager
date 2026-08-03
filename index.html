@@ -5,6 +5,23 @@
 
   <meta charset="UTF-8">
 
+  <script>
+    try {
+      if (
+        localStorage.getItem(
+          "zipzip-theme"
+        ) === "dark"
+      ) {
+        document.documentElement
+          .classList.add(
+            "dark-theme-preload"
+          );
+      }
+    } catch {
+      /* Use the light theme when storage is unavailable. */
+    }
+  </script>
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
@@ -113,33 +130,16 @@
       <a
         href="#"
         class="sidebar-menu__item"
-        data-view="calendar"
+        data-view="archive"
       >
 
-        <i class="bi bi-calendar3"></i>
+        <i class="bi bi-archive"></i>
 
         <span>
-          Calendar
+          Archive
         </span>
 
       </a>
-
-
-
-      <a
-        href="#"
-        class="sidebar-menu__item"
-        data-view="completed"
-      >
-
-        <i class="bi bi-check-circle"></i>
-
-        <span>
-          Completed
-        </span>
-
-      </a>
-
 
     </nav>
 
@@ -251,7 +251,14 @@ Light
 
 
 </button>
-
+<button
+class="primary-button"
+id="openTaskModalButton"
+type="button"
+>
+<i class="bi bi-plus-lg"></i>
+<span>New Task</span>
+</button> 
 
 </div>
 
@@ -318,27 +325,6 @@ Add your first task to get started.
 </div>
 
 
-
-
-
-<button
-class="primary-button"
-id="openTaskModalButton"
-type="button"
->
-
-
-<i class="bi bi-plus-lg"></i>
-
-
-<span>
-
-New Task
-
-</span>
-
-
-</button>
 
 
 
@@ -768,7 +754,21 @@ High Priority
 class="toolbar-actions"
 >
 
+<!-- NEW TASK BUTTON -->
+<!-- 
+<button
+class="primary-button new-task-button"
+id="openTaskModalButton"
+type="button"
+>
 
+<i class="bi bi-plus"></i>
+
+<span>
+New Task
+</span>
+
+</button> -->
 
 
 
@@ -1102,24 +1102,6 @@ Apply
 ===================================== -->
 
 
-<button
-class="quick-add-button"
-id="openQuickTaskModalButton"
-type="button"
->
-
-
-<i class="bi bi-plus-lg"></i>
-
-
-<span>
-
-Add a task quickly...
-
-</span>
-
-
-</button>
 
 
 
@@ -1164,6 +1146,17 @@ Create your first task using the New Task button.
 
 </p>
 
+<section class="quick-add-section" aria-labelledby="quickAddTitle">
+  <h3 id="quickAddTitle">Quick Add Task</h3>
+  <button
+  class="quick-add-button"
+  id="openQuickTaskModalButton"
+  type="button"
+  >
+    <i class="bi bi-plus-lg"></i>
+    <span>Add a task quickly...</span>
+  </button>
+</section>
 
 </div>
 
@@ -1581,6 +1574,7 @@ hidden
 
 <!-- UPCOMING DEADLINES -->
 
+<div class="dashboard-side-stack">
 
 <section
 class="widget deadline-widget"
@@ -1599,7 +1593,7 @@ Upcoming Deadlines
 </h2>
 
 
-
+<!--
 <button
 class="widget-link-button"
 id="viewAllDeadlinesButton"
@@ -1608,7 +1602,7 @@ type="button"
 
 View all
 
-</button>
+</button> -->
 
 
 
@@ -1656,12 +1650,21 @@ No upcoming deadlines
 
 
 
+<section class="dashboard-mascot-card" aria-label="Productivity encouragement">
+  <div>
+    <h2>Keep going!</h2>
+    <p>Small steps every day lead to big results.</p>
+  </div>
+  <img
+    src="assets/images/pompurin.png"
+    alt=""
+    aria-hidden="true"
+  >
+</section>
+
+</div>
+
 </aside>
-
-
-
-
-
 
 </div>
 <!-- END dashboard-layout -->

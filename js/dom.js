@@ -32,6 +32,11 @@ export const dom = {
       "#openQuickTaskModalButton"
     ),
 
+  quickAddSection:
+    document.querySelector(
+      ".quick-add-section"
+    ),
+
   closeTaskModalButton:
     document.querySelector(
       "#closeTaskModalButton"
@@ -268,10 +273,6 @@ export const dom = {
       "#deadlineEmptyState"
     ),
 
-  viewAllDeadlinesButton:
-    document.querySelector(
-      "#viewAllDeadlinesButton"
-    ),
 
     /* Search */
 searchTaskForm:

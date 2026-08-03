@@ -1,13 +1,12 @@
 import { dom } from "./dom.js";
 import { state } from "./state.js";
 
+
 import {
   getTodayDateString,
   formatDateForDisplay,
 } from "./date.js";
 
-
-const maximumDeadlinePreview = 3;
 
 
 const priorityDotClassMap = {
@@ -34,6 +33,9 @@ const priorityBadgeClassMap = {
 };
 
 
+const DEADLINE_VISIBLE_LIMIT = 3;
+
+
 /* =========================================
    MENGAMBIL UPCOMING DEADLINES
 ========================================= */
@@ -57,6 +59,7 @@ function getUpcomingDeadlineTasks() {
 
 
         return (
+          !task.archived &&
           hasDueDate &&
           isTodayOrFuture &&
           isNotCompleted
@@ -64,12 +67,34 @@ function getUpcomingDeadlineTasks() {
       }
     )
     .sort(
-      function (taskA, taskB) {
-        return taskA.dueDate.localeCompare(
-          taskB.dueDate
-        );
-      }
+  function(taskA, taskB) {
+
+
+    const dateCompare =
+      taskA.dueDate.localeCompare(
+        taskB.dueDate
+      );
+
+
+    if (dateCompare !== 0) {
+      return dateCompare;
+    }
+
+
+    const priorityOrder = {
+      High: 1,
+      Medium: 2,
+      Low: 3,
+    };
+
+
+    return (
+      priorityOrder[taskA.priority] -
+      priorityOrder[taskB.priority]
     );
+
+  }
+);
 }
 
 
@@ -182,94 +207,101 @@ function createDeadlineElement(task) {
 /* =========================================
    MERENDER UPCOMING DEADLINES
 ========================================= */
-
 export function renderUpcomingDeadlines() {
+
   const upcomingTasks =
     getUpcomingDeadlineTasks();
 
 
   /*
-   * Kondisi tidak memiliki deadline.
+   * Tidak ada deadline
    */
   if (upcomingTasks.length === 0) {
-    dom.deadlineEmptyState.hidden =
-      false;
 
-    dom.deadlineList.replaceChildren(
-      dom.deadlineEmptyState
+    dom.deadlineList?.classList.remove(
+      "deadline-list--scrollable"
     );
 
-    dom.viewAllDeadlinesButton.hidden =
-      true;
+    if (dom.deadlineEmptyState) {
 
-    state.showAllDeadlines = false;
+      dom.deadlineEmptyState.hidden =
+        false;
+
+      dom.deadlineList.replaceChildren(
+        dom.deadlineEmptyState
+      );
+
+    }
 
     return;
+
   }
 
 
-  dom.deadlineEmptyState.hidden =
-    true;
-
-
   /*
-   * Tentukan jumlah yang ditampilkan.
+   * Ada deadline
    */
-  const visibleTasks =
-    state.showAllDeadlines
-      ? upcomingTasks
-      : upcomingTasks.slice(
-          0,
-          maximumDeadlinePreview
-        );
+  if (dom.deadlineEmptyState) {
+
+    dom.deadlineEmptyState.hidden =
+      true;
+
+  }
 
 
   dom.deadlineList.replaceChildren();
 
+  dom.deadlineList.classList.toggle(
+    "deadline-list--scrollable",
+    upcomingTasks.length >
+      DEADLINE_VISIBLE_LIMIT
+  );
 
-  visibleTasks.forEach(
-    function (task) {
+  dom.deadlineList.setAttribute(
+    "aria-label",
+    upcomingTasks.length >
+      DEADLINE_VISIBLE_LIMIT
+      ? "Upcoming deadlines. Scroll to view more."
+      : "Upcoming deadlines"
+  );
+
+
+  const deadlineFragment =
+    document.createDocumentFragment();
+
+
+  upcomingTasks.forEach(
+    function(task) {
+
       const deadlineElement =
         createDeadlineElement(task);
 
-      dom.deadlineList.append(
+
+      deadlineFragment.append(
         deadlineElement
       );
+
     }
   );
 
 
-  /*
-   * Tombol View all hanya muncul
-   * jika deadline lebih dari 3.
-   */
-  const hasMoreDeadlines =
-    upcomingTasks.length >
-    maximumDeadlinePreview;
+  dom.deadlineList.append(
+    deadlineFragment
+  );
 
-  dom.viewAllDeadlinesButton.hidden =
-    !hasMoreDeadlines;
-
-
-  dom.viewAllDeadlinesButton.textContent =
-    state.showAllDeadlines
-      ? "Show less"
-      : "View all";
 }
-
-
 /* =========================================
    EVENT UPCOMING DEADLINES
 ========================================= */
 
 export function setupDeadlineEvents() {
-  dom.viewAllDeadlinesButton
-    .addEventListener(
-      "click",
-      function () {
-        state.showAllDeadlines =
-          !state.showAllDeadlines;
-        renderUpcomingDeadlines();
-      }
-    );
+  // dom.viewAllDeadlinesButton
+  //   .addEventListener(
+  //     "click",
+  //     function () {
+  //       state.showAllDeadlines =
+
+  //       renderUpcomingDeadlines();
+  //     }
+  //   );
 }

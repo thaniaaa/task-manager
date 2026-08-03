@@ -32,5 +32,4 @@ export const state = {
   selectedCalendarDate: "",
 
 
-  showAllDeadlines: false,
 };
