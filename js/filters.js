@@ -38,6 +38,15 @@ export function getFilteredTaskItems(
       const taskDescription =
       taskItem.dataset.description || "";
 
+      const taskIsArchived =
+        taskItem.dataset.archived ===
+          "true";
+
+      const matchesArchiveView =
+        state.activeView === "archive"
+          ? taskIsArchived
+          : !taskIsArchived;
+
 
       /*
        * Filter tab.
@@ -121,7 +130,8 @@ const matchesSearch =
   );
 
       return (
-         matchesTabFilter &&
+          matchesArchiveView &&
+          matchesTabFilter &&
           matchesCategory &&
         matchesPriority &&
         matchesSearch

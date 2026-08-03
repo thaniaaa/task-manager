@@ -19,6 +19,7 @@ function getTasksForDate(
   return state.tasks.filter(
     function (task) {
       return (
+        !task.archived &&
         task.dueDate ===
         dateString
       );
@@ -190,8 +191,19 @@ function createCalendarDay(
     "calendar-day"
   );
 
-  button.textContent =
+  const dayNumber =
+    document.createElement("span");
+
+  dayNumber.classList.add(
+    "calendar-day__number"
+  );
+
+  dayNumber.textContent =
     date.getDate();
+
+  button.append(
+    dayNumber
+  );
 
   button.dataset.date =
     dateString;
@@ -693,8 +705,22 @@ function renderCalendarDays(
     return;
   }
 
+  const calendarDays =
+    generateCalendarDays();
+
+  container.style.setProperty(
+    "--calendar-weeks",
+    String(
+      calendarDays.length / 7
+    )
+  );
+
+  container.classList.add(
+    "calendar-days--illustrated"
+  );
+
   container.replaceChildren(
-    ...generateCalendarDays()
+    ...calendarDays
   );
 }
 

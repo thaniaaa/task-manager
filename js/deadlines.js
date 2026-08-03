@@ -59,6 +59,7 @@ function getUpcomingDeadlineTasks() {
 
 
         return (
+          !task.archived &&
           hasDueDate &&
           isTodayOrFuture &&
           isNotCompleted

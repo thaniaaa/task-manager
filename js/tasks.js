@@ -27,6 +27,10 @@ import {
 import {
   updateDashboardWelcome,
 } from "./views.js";
+
+import {
+  saveTasks,
+} from "./storage.js";
  "./modal.js";
 
 
@@ -145,6 +149,8 @@ const priorityClassMap = {
 ========================================= */
 
 function refreshTaskViews() {
+  saveTasks(state.tasks);
+
   updateTaskAnalytics();
 
   updateDashboardWelcome();
@@ -345,6 +351,14 @@ export function createTaskElement(task) {
     (
       task.description || ""
     ).toLowerCase();
+
+  taskItem.dataset.archived =
+    String(Boolean(task.archived));
+
+  taskItem.classList.toggle(
+    "task-item--archived",
+    Boolean(task.archived)
+  );
 
 
   /* =====================================
@@ -660,6 +674,47 @@ const taskPriority =
     '<i class="bi bi-trash3"></i>';
 
 
+  /*
+   * Tombol Archive / Restore.
+   */
+  const archiveButton =
+    document.createElement("button");
+
+  archiveButton.type = "button";
+
+  archiveButton.classList.add(
+    "task-action",
+    "task-action--archive"
+  );
+
+  const taskIsArchived =
+    Boolean(task.archived);
+
+  archiveButton.setAttribute(
+    "aria-label",
+    taskIsArchived
+      ? "Restore task from archive"
+      : "Archive task"
+  );
+
+  archiveButton.setAttribute(
+    "title",
+    taskIsArchived
+      ? "Restore task"
+      : "Archive task"
+  );
+
+  archiveButton.innerHTML =
+    taskIsArchived
+      ? '<i class="bi bi-arrow-counterclockwise"></i>'
+      : '<i class="bi bi-archive"></i>';
+
+  archiveButton.classList.toggle(
+    "task-action--restore",
+    taskIsArchived
+  );
+
+
   /* =====================================
      STATUS AWAL
   ===================================== */
@@ -754,6 +809,49 @@ taskCheckbox.addEventListener(
   );
 
 
+  archiveButton.addEventListener(
+    "click",
+    function () {
+      task.archived =
+        !Boolean(task.archived);
+
+      taskItem.dataset.archived =
+        String(task.archived);
+
+      taskItem.classList.toggle(
+        "task-item--archived",
+        task.archived
+      );
+
+      archiveButton.classList.toggle(
+        "task-action--restore",
+        task.archived
+      );
+
+      archiveButton.setAttribute(
+        "aria-label",
+        task.archived
+          ? "Restore task from archive"
+          : "Archive task"
+      );
+
+      archiveButton.setAttribute(
+        "title",
+        task.archived
+          ? "Restore task"
+          : "Archive task"
+      );
+
+      archiveButton.innerHTML =
+        task.archived
+          ? '<i class="bi bi-arrow-counterclockwise"></i>'
+          : '<i class="bi bi-archive"></i>';
+
+      refreshTaskViews();
+    }
+  );
+
+
   /* =====================================
      MENYUSUN ELEMEN
   ===================================== */
@@ -765,6 +863,7 @@ taskCheckbox.addEventListener(
 
 
   taskActions.append(
+    archiveButton,
     editButton,
     deleteButton
   );
@@ -934,6 +1033,8 @@ function createNewTask(
 
     description:
       taskFormData.description,
+
+    archived: false,
   };
 
 

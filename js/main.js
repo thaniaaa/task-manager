@@ -41,9 +41,45 @@ import {
   setupTheme,
 } from "./theme.js";
 
+import {
+  state,
+} from "./state.js";
+
+import {
+  createTaskElement,
+} from "./tasks.js";
+
+import {
+  loadTasks,
+} from "./storage.js";
+
+import {
+  dom,
+} from "./dom.js";
+
+
+function restoreSavedTasks() {
+  const savedTasks =
+    loadTasks();
+
+  state.tasks.push(
+    ...savedTasks
+  );
+
+  savedTasks.forEach(
+    function (task) {
+      dom.taskList.append(
+        createTaskElement(task)
+      );
+    }
+  );
+}
+
 /* =========================================
    MEMASANG EVENT
 ========================================= */
+restoreSavedTasks();
+
 setupTheme();
 
 setupViewNavigation();

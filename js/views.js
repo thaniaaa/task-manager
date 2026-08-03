@@ -53,7 +53,11 @@ export function updateDashboardWelcome() {
   }
 
   const totalTasks =
-    state.tasks.length;
+    state.tasks.filter(
+      function (task) {
+        return !task.archived;
+      }
+    ).length;
 
   const today =
     getTodayDateString();
@@ -62,6 +66,7 @@ export function updateDashboardWelcome() {
     state.tasks.filter(
       function (task) {
         return (
+          !task.archived &&
           task.dueDate &&
           task.dueDate >= today &&
           task.status !==
@@ -183,7 +188,8 @@ function resetViewLayout() {
 
   dom.tasksPanel?.classList.remove(
     "tasks-panel--full",
-    "tasks-panel--completed"
+    "tasks-panel--completed",
+    "tasks-panel--archive"
   );
 
   setElementHidden(
@@ -328,7 +334,7 @@ function showCalendarView() {
 }
 
 
-function showCompletedView() {
+function showArchiveView() {
   resetViewLayout();
   resetTaskRefinements();
 
@@ -338,7 +344,7 @@ function showCompletedView() {
 
   dom.tasksPanel?.classList.add(
     "tasks-panel--full",
-    "tasks-panel--completed"
+    "tasks-panel--archive"
   );
 
   setElementHidden(
@@ -372,11 +378,11 @@ function showCompletedView() {
   );
 
   updatePageHeader(
-    "Completed Tasks",
-    "Review all tasks you have successfully completed."
+    "Archived Tasks",
+    "Review or restore tasks saved in your archive."
   );
 
-  updateTaskFilter("completed");
+  updateTaskFilter("all");
 }
 
 
@@ -399,8 +405,8 @@ function showSelectedView(
       showCalendarView();
       break;
 
-    case "completed":
-      showCompletedView();
+    case "archive":
+      showArchiveView();
       break;
 
     case "dashboard":

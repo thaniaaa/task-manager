@@ -70,6 +70,20 @@ export function renderTaskPagination() {
       )
     );
 
+  const currentViewTaskItems =
+    allTaskItems.filter(
+      function (taskItem) {
+        const taskIsArchived =
+          taskItem.dataset.archived ===
+            "true";
+
+        return state.activeView ===
+          "archive"
+          ? taskIsArchived
+          : !taskIsArchived;
+      }
+    );
+
 
   /*
    * Memfilter task.
@@ -137,7 +151,8 @@ export function renderTaskPagination() {
    */
   if (dom.quickAddSection) {
     dom.quickAddSection.hidden =
-      allTaskItems.length > 0;
+      state.activeView === "archive" ||
+      currentViewTaskItems.length > 0;
   }
 
 
@@ -163,15 +178,21 @@ export function renderTaskPagination() {
      * Bedakan antara:
      * belum ada task dan filter kosong.
      */
-    if (allTaskItems.length === 0) {
+    if (
+      currentViewTaskItems.length === 0
+    ) {
       if (emptyTitle) {
         emptyTitle.textContent =
-          "No tasks yet";
+          state.activeView === "archive"
+            ? "Archive is empty"
+            : "No tasks yet";
       }
 
       if (emptyDescription) {
         emptyDescription.textContent =
-          "Create your first task using the New Task button.";
+          state.activeView === "archive"
+            ? "Archived tasks will appear here."
+            : "Create your first task using the New Task button.";
       }
     } else {
       if (emptyTitle) {
