@@ -9018,6 +9018,62 @@ body.dark-theme .dashboard-mascot-card p {
 }
 
 
+/* ==================================================
+   CONSISTENT TASK PANEL BORDERS
+================================================== */
+
+#tasksPanel .task-item,
+#tasksPanel .task-item--archived {
+  background-color: transparent !important;
+}
+
+@media (min-width: 681px) {
+  #tasksPanel .task-list,
+  .tasks-panel--full .task-list,
+  .tasks-panel--archive .task-list {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 16px 20px 8px;
+    overflow: visible;
+    border: 1px solid var(--color-border) !important;
+    border-bottom: 0 !important;
+    border-radius: 14px 14px 0 0;
+    background: var(--color-surface) !important;
+    box-shadow: none;
+  }
+
+  #tasksPanel .task-footer,
+  .tasks-panel--full .task-footer,
+  .tasks-panel--archive .task-footer {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 46px;
+    margin: 0 !important;
+    padding: 11px 20px;
+    border: 1px solid var(--color-border) !important;
+    border-top: 1px solid var(--color-border) !important;
+    border-radius: 0 0 14px 14px;
+    background: var(--color-surface) !important;
+    box-shadow: none;
+  }
+
+  #tasksPanel .task-item {
+    margin: 0;
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  #tasksPanel .task-item:hover {
+    background: var(--color-surface-soft) !important;
+    box-shadow: none;
+    transform: none;
+  }
+}
+
+
 /* Mobile interaction corrections for iOS Safari and Samsung Internet. */
 @media (max-width: 680px) {
   #tasksPanel .task-toolbar {
@@ -9514,7 +9570,7 @@ body.dark-theme .dashboard-mascot-card p {
     overflow-x: scroll !important;
     overflow-y: hidden !important;
     scroll-padding-inline: 0 16px;
-    touch-action: pan-y;
+    touch-action: pan-x pan-y;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -9522,7 +9578,8 @@ body.dark-theme .dashboard-mascot-card p {
     flex: 0 0 auto;
     width: auto;
     min-width: max-content;
-    touch-action: pan-y;
+    pointer-events: auto !important;
+    touch-action: pan-x pan-y;
   }
 
   #tasksPanel .task-item,
@@ -9562,6 +9619,61 @@ body.dark-theme .dashboard-mascot-card p {
     appearance: none !important;
     -webkit-appearance: none !important;
     -webkit-text-fill-color: currentColor;
+  }
+}
+
+#tasksPanel .filter-tab.filter-tab--active {
+  color: #ffffff !important;
+  border-color: var(--color-primary) !important;
+  background: var(--color-primary) !important;
+  box-shadow: 0 4px 12px rgba(208, 120, 59, 0.22);
+}
+
+body.dark-theme #tasksPanel .filter-tab.filter-tab--active {
+  color: #1f1814 !important;
+  border-color: var(--color-accent) !important;
+  background: var(--color-accent) !important;
+}
+
+
+/* Mobile-only rail and compact filter sheet. Desktop is unaffected. */
+@media (max-width: 680px) {
+  #tasksPanel .filter-tabs,
+  #tasksPanel .filter-tab {
+    touch-action: pan-y;
+  }
+
+  #tasksPanel .filter-tabs {
+    overscroll-behavior-x: contain;
+  }
+
+  #tasksPanel .filter-menu,
+  #tasksPanel .sort-menu {
+    max-height: calc(100dvh - 28px);
+    padding: 14px;
+    overflow-y: auto;
+  }
+
+  #tasksPanel .filter-menu__group {
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+
+  #tasksPanel .filter-menu__group label {
+    font-size: 12px;
+  }
+
+  #tasksPanel .filter-menu__group select,
+  #tasksPanel .filter-menu__group select option {
+    min-height: 40px;
+    padding: 8px 10px;
+    font-size: 13px !important;
+    line-height: 1.25;
+  }
+
+  #tasksPanel .filter-menu__actions button {
+    min-height: 42px;
+    font-size: 13px;
   }
 }
 
