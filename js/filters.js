@@ -339,111 +339,105 @@ export function setupFilterSortEvents(
    * Filter tabs.
    */
   if (dom.taskFilterTabs) {
-    let swipeStartX = 0;
-    let swipeStartY = 0;
-    let swipeStartScrollLeft = 0;
-    let filterTabsDidDrag = false;
+    const mobileFilterQuery =
+      window.matchMedia(
+        "(max-width: 680px)"
+      );
 
-    dom.taskFilterTabs.addEventListener(
-      "touchstart",
-      function (event) {
-        const touch = event.touches[0];
-
-        swipeStartX = touch.clientX;
-        swipeStartY = touch.clientY;
-        swipeStartScrollLeft =
-          dom.taskFilterTabs.scrollLeft;
-        filterTabsDidDrag = false;
-      },
-      { passive: true }
-    );
-
-    dom.taskFilterTabs.addEventListener(
-      "touchmove",
-      function (event) {
-        const touch = event.touches[0];
-        const distanceX =
-          touch.clientX - swipeStartX;
-        const distanceY =
-          touch.clientY - swipeStartY;
-
-        if (
-          Math.abs(distanceX) <=
-          Math.abs(distanceY)
-        ) {
-          return;
-        }
-
-        filterTabsDidDrag =
-          Math.abs(distanceX) > 4;
-
-        dom.taskFilterTabs.scrollLeft =
-          swipeStartScrollLeft - distanceX;
-
-        event.preventDefault();
-      },
-      { passive: false }
-    );
-
-    let pointerIsDragging = false;
-    let pointerStartX = 0;
-    let pointerStartScrollLeft = 0;
+    let railPointerId = null;
+    let railStartX = 0;
+    let railStartY = 0;
+    let railStartScrollLeft = 0;
+    let railDidDrag = false;
+    let suppressFilterClickUntil = 0;
 
     dom.taskFilterTabs.addEventListener(
       "pointerdown",
       function (event) {
-        if (event.pointerType === "touch") {
+        if (!mobileFilterQuery.matches) {
           return;
         }
 
-        pointerIsDragging = true;
-        filterTabsDidDrag = false;
-        pointerStartX = event.clientX;
-        pointerStartScrollLeft =
+        railPointerId = event.pointerId;
+        railStartX = event.clientX;
+        railStartY = event.clientY;
+        railStartScrollLeft =
           dom.taskFilterTabs.scrollLeft;
-        dom.taskFilterTabs.setPointerCapture(
-          event.pointerId
-        );
+        railDidDrag = false;
       }
     );
 
     dom.taskFilterTabs.addEventListener(
       "pointermove",
       function (event) {
-        if (!pointerIsDragging) {
+        if (
+          !mobileFilterQuery.matches ||
+          event.pointerId !== railPointerId
+        ) {
           return;
         }
 
         const distanceX =
-          event.clientX - pointerStartX;
+          event.clientX - railStartX;
+        const distanceY =
+          event.clientY - railStartY;
 
-        filterTabsDidDrag =
-          Math.abs(distanceX) > 4;
+        if (
+          !railDidDrag &&
+          Math.abs(distanceX) < 6
+        ) {
+          return;
+        }
 
+        if (
+          !railDidDrag &&
+          Math.abs(distanceY) >
+            Math.abs(distanceX)
+        ) {
+          railPointerId = null;
+          return;
+        }
+
+        railDidDrag = true;
         dom.taskFilterTabs.scrollLeft =
-          pointerStartScrollLeft - distanceX;
+          railStartScrollLeft - distanceX;
+
+        event.preventDefault();
       }
     );
 
-    function finishPointerDrag() {
-      pointerIsDragging = false;
+    function finishRailDrag(event) {
+      if (event.pointerId !== railPointerId) {
+        return;
+      }
+
+      if (railDidDrag) {
+        suppressFilterClickUntil =
+          Date.now() + 250;
+      }
+
+      railPointerId = null;
+      railDidDrag = false;
     }
 
     dom.taskFilterTabs.addEventListener(
       "pointerup",
-      finishPointerDrag
+      finishRailDrag
     );
 
     dom.taskFilterTabs.addEventListener(
       "pointercancel",
-      finishPointerDrag
+      finishRailDrag
     );
 
     dom.taskFilterTabs.addEventListener(
       "click",
       function (event) {
-        if (filterTabsDidDrag) {
-          filterTabsDidDrag = false;
+        if (
+          mobileFilterQuery.matches &&
+          Date.now() <
+            suppressFilterClickUntil
+        ) {
           event.preventDefault();
           return;
         }
@@ -470,12 +464,20 @@ export function setupFilterSortEvents(
             button.classList.remove(
               "filter-tab--active"
             );
+            button.setAttribute(
+              "aria-pressed",
+              "false"
+            );
           }
         );
 
 
         filterButton.classList.add(
           "filter-tab--active"
+        );
+        filterButton.setAttribute(
+          "aria-pressed",
+          "true"
         );
 
         filterButton.scrollIntoView({
