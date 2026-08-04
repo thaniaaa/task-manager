@@ -339,9 +339,115 @@ export function setupFilterSortEvents(
    * Filter tabs.
    */
   if (dom.taskFilterTabs) {
+    let swipeStartX = 0;
+    let swipeStartY = 0;
+    let swipeStartScrollLeft = 0;
+    let filterTabsDidDrag = false;
+
+    dom.taskFilterTabs.addEventListener(
+      "touchstart",
+      function (event) {
+        const touch = event.touches[0];
+
+        swipeStartX = touch.clientX;
+        swipeStartY = touch.clientY;
+        swipeStartScrollLeft =
+          dom.taskFilterTabs.scrollLeft;
+        filterTabsDidDrag = false;
+      },
+      { passive: true }
+    );
+
+    dom.taskFilterTabs.addEventListener(
+      "touchmove",
+      function (event) {
+        const touch = event.touches[0];
+        const distanceX =
+          touch.clientX - swipeStartX;
+        const distanceY =
+          touch.clientY - swipeStartY;
+
+        if (
+          Math.abs(distanceX) <=
+          Math.abs(distanceY)
+        ) {
+          return;
+        }
+
+        filterTabsDidDrag =
+          Math.abs(distanceX) > 4;
+
+        dom.taskFilterTabs.scrollLeft =
+          swipeStartScrollLeft - distanceX;
+
+        event.preventDefault();
+      },
+      { passive: false }
+    );
+
+    let pointerIsDragging = false;
+    let pointerStartX = 0;
+    let pointerStartScrollLeft = 0;
+
+    dom.taskFilterTabs.addEventListener(
+      "pointerdown",
+      function (event) {
+        if (event.pointerType === "touch") {
+          return;
+        }
+
+        pointerIsDragging = true;
+        filterTabsDidDrag = false;
+        pointerStartX = event.clientX;
+        pointerStartScrollLeft =
+          dom.taskFilterTabs.scrollLeft;
+        dom.taskFilterTabs.setPointerCapture(
+          event.pointerId
+        );
+      }
+    );
+
+    dom.taskFilterTabs.addEventListener(
+      "pointermove",
+      function (event) {
+        if (!pointerIsDragging) {
+          return;
+        }
+
+        const distanceX =
+          event.clientX - pointerStartX;
+
+        filterTabsDidDrag =
+          Math.abs(distanceX) > 4;
+
+        dom.taskFilterTabs.scrollLeft =
+          pointerStartScrollLeft - distanceX;
+      }
+    );
+
+    function finishPointerDrag() {
+      pointerIsDragging = false;
+    }
+
+    dom.taskFilterTabs.addEventListener(
+      "pointerup",
+      finishPointerDrag
+    );
+
+    dom.taskFilterTabs.addEventListener(
+      "pointercancel",
+      finishPointerDrag
+    );
+
     dom.taskFilterTabs.addEventListener(
       "click",
       function (event) {
+        if (filterTabsDidDrag) {
+          filterTabsDidDrag = false;
+          event.preventDefault();
+          return;
+        }
+
         const filterButton =
           event.target.closest(
             ".filter-tab"
@@ -371,6 +477,12 @@ export function setupFilterSortEvents(
         filterButton.classList.add(
           "filter-tab--active"
         );
+
+        filterButton.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center",
+        });
 
 
         state.activeFilter =

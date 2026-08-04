@@ -8687,3 +8687,901 @@ body.dark-theme .dashboard-mascot-card p {
 }
 
 
+/* ==================================================
+   MOBILE TASK LIST AND TASK MODAL
+================================================== */
+
+@media (max-width: 680px) {
+  /* Keep the task panel inside the phone viewport. */
+  .tasks-panel,
+  .task-list,
+  .task-item {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .task-list {
+    overflow-x: hidden;
+    padding-bottom: 0;
+  }
+
+  /* Turn the desktop row into a readable mobile task card. */
+  .task-item {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "main main"
+      "category status"
+      "priority date"
+      "description description"
+      "actions actions";
+    gap: 9px 10px;
+    padding: 12px 10px;
+  }
+
+  .task-item__main {
+    width: 100%;
+  }
+
+  .task-item__title {
+    font-size: 13px;
+  }
+
+  .category-badge {
+    grid-area: category;
+  }
+
+  .status-badge {
+    grid-area: status;
+  }
+
+  .priority-badge {
+    grid-area: priority;
+  }
+
+  .task-item .badge-select {
+    justify-self: stretch;
+    width: 100%;
+    max-width: 100%;
+    min-height: 36px;
+    padding-inline: 10px 28px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .task-date {
+    grid-area: date;
+    justify-content: flex-start;
+    justify-self: stretch;
+    min-width: 0;
+    min-height: 36px;
+    padding: 6px 8px;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-surface-soft);
+  }
+
+  .task-date span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .task-description {
+    grid-area: description;
+  }
+
+  .task-actions {
+    grid-area: actions;
+    justify-content: flex-end;
+    justify-self: stretch;
+    padding-top: 2px;
+  }
+
+  .task-action {
+    width: 38px;
+    height: 38px;
+  }
+
+  /* Use the actual visible viewport on mobile browsers. */
+  .modal {
+    align-items: center;
+    padding:
+      max(10px, env(safe-area-inset-top))
+      max(10px, env(safe-area-inset-right))
+      max(10px, env(safe-area-inset-bottom))
+      max(10px, env(safe-area-inset-left));
+  }
+
+  .modal__dialog {
+    width: min(100%, 480px);
+    max-height: calc(100dvh - 20px);
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .modal__header {
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .modal__header h2 {
+    font-size: 19px;
+  }
+
+  .modal__header p {
+    display: none;
+  }
+
+  .modal__close-button {
+    width: 34px;
+    height: 34px;
+  }
+
+  .task-form {
+    gap: 12px;
+  }
+
+  .form-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .form-group {
+    min-width: 0;
+    gap: 5px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .form-group textarea {
+    min-height: 72px;
+    max-height: 110px;
+  }
+
+  .task-form__actions {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .task-form__actions button {
+    width: auto;
+    flex: 1;
+  }
+}
+
+@media (max-width: 389px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .modal {
+    align-items: flex-start;
+  }
+}
+
+
+/* Final containment for narrow Android and iOS task views. */
+@media (max-width: 680px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .app-shell,
+  .app-main,
+  .dashboard-layout,
+  .dashboard-content,
+  #tasksPanel,
+  .tasks-panel--full {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .app-main,
+  .dashboard-layout,
+  .dashboard-content,
+  #tasksPanel {
+    overflow-x: clip;
+  }
+
+  .dashboard-layout,
+  .dashboard-layout.dashboard-layout--single {
+    padding: 14px 10px 24px;
+  }
+
+  #tasksPanel .task-toolbar,
+  .tasks-panel--full .task-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+    margin: 6px 0 10px;
+  }
+
+  /* Every filter remains visible; no partially hidden horizontal tab. */
+  #tasksPanel .filter-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    overflow: visible;
+  }
+
+  #tasksPanel .filter-tab {
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    padding: 0 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #tasksPanel .filter-tab:last-child {
+    grid-column: 1 / -1;
+  }
+
+  #tasksPanel .toolbar-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  #tasksPanel .toolbar-dropdown,
+  #tasksPanel .secondary-button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  #tasksPanel .secondary-button {
+    justify-content: center;
+  }
+
+  #tasksPanel .filter-menu {
+    right: 0;
+    left: auto;
+    width: min(280px, calc(100vw - 32px));
+    max-width: calc(100vw - 32px);
+  }
+
+  #tasksPanel .task-list,
+  .tasks-panel--full .task-list {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 10px 8px 6px;
+    overflow: visible;
+    border-radius: 13px 13px 0 0;
+  }
+
+  #tasksPanel .task-item,
+  .tasks-panel--full .task-item {
+    width: 100%;
+    min-width: 0;
+    padding: 12px 4px;
+    transform: none;
+    box-shadow: none;
+  }
+
+  #tasksPanel .task-item:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  #tasksPanel .task-footer,
+  .tasks-panel--full .task-footer {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 10px 12px 12px;
+    gap: 8px;
+  }
+
+  #tasksPanel .task-footer > * {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 370px) {
+  .dashboard-layout,
+  .dashboard-layout.dashboard-layout--single {
+    padding-inline: 7px;
+  }
+
+  #tasksPanel .task-list,
+  .tasks-panel--full .task-list {
+    padding-inline: 6px;
+  }
+
+  #tasksPanel .task-item,
+  .tasks-panel--full .task-item {
+    gap: 8px 6px;
+  }
+
+  .task-item .badge-select,
+  .task-date {
+    font-size: 10px;
+  }
+}
+
+
+/* Mobile interaction corrections for iOS Safari and Samsung Internet. */
+@media (max-width: 680px) {
+  #tasksPanel .task-toolbar {
+    min-width: 0;
+    padding-inline: 6px;
+  }
+
+  #tasksPanel .filter-tabs {
+    position: relative;
+    box-sizing: border-box;
+    flex-wrap: nowrap;
+    width: calc(100vw - 32px);
+    max-width: calc(100vw - 32px);
+    margin-inline: auto;
+    padding: 3px 0 9px;
+    overflow-x: scroll !important;
+    overflow-y: hidden !important;
+    touch-action: pan-x;
+    cursor: grab;
+  }
+
+  #tasksPanel .filter-tabs:active {
+    cursor: grabbing;
+  }
+
+  #tasksPanel .filter-tab {
+    flex: 0 0 auto;
+    touch-action: pan-x;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* Filter and sort panels become centered bottom sheets on phones. */
+  #tasksPanel .filter-menu,
+  #tasksPanel .sort-menu {
+    position: fixed;
+    z-index: 1000;
+    top: auto;
+    right: 14px;
+    bottom: max(14px, env(safe-area-inset-bottom));
+    left: 14px;
+    box-sizing: border-box;
+    width: auto !important;
+    max-width: none;
+    margin: 0;
+    padding: 18px;
+    border-radius: 18px;
+    box-shadow: 0 -16px 60px rgba(21, 15, 12, 0.28);
+  }
+
+  #tasksPanel .filter-menu__group select {
+    width: 100%;
+    min-height: 46px;
+    font-size: 16px;
+  }
+
+  #tasksPanel .filter-menu__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  #tasksPanel .filter-menu__actions button {
+    width: 100%;
+    min-height: 46px;
+  }
+
+  /* Stable card columns: title gets all remaining space. */
+  #tasksPanel .task-item,
+  .tasks-panel--full .task-item {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) 38px;
+    grid-template-areas:
+      "main main main more"
+      "category status priority priority"
+      "date date date date"
+      "description description description description";
+  }
+
+  #tasksPanel .task-item__main {
+    overflow: hidden;
+  }
+
+  #tasksPanel .task-item__title {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  #tasksPanel .category-badge,
+  #tasksPanel .status-badge,
+  #tasksPanel .priority-badge {
+    box-sizing: border-box;
+    justify-self: stretch;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    height: 34px;
+    padding: 0 8px !important;
+    overflow: hidden;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 11px !important;
+    line-height: 34px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -webkit-text-fill-color: currentColor;
+  }
+}
+
+@media (max-width: 370px) {
+  #tasksPanel .task-item,
+  .tasks-panel--full .task-item {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) 36px;
+    grid-template-areas:
+      "main main main more"
+      "category status priority priority"
+      "date date date date"
+      "description description description description";
+  }
+
+  #tasksPanel .category-badge,
+  #tasksPanel .status-badge,
+  #tasksPanel .priority-badge {
+    padding-inline: 5px !important;
+    font-size: 10px !important;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .calendar-widget,
+  .calendar-large,
+  .calendar-days,
+  .calendar-day,
+  .calendar-day__number,
+  .calendar-header button {
+    transform: none !important;
+  }
+
+  .calendar-day,
+  .calendar-day__number,
+  .calendar-header button {
+    transition: none !important;
+    animation: none !important;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .calendar-day:hover,
+  .calendar-day:active,
+  .calendar-days--illustrated .calendar-day:hover,
+  .calendar-days--illustrated .calendar-day:active,
+  .calendar-header button:hover,
+  .calendar-header button:active {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .calendar-days--enter-next,
+  .calendar-days--enter-previous {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+
+/* ==================================================
+   MOBILE TASK READING MODE AND BOTTOM SHEETS
+================================================== */
+
+.task-more-button,
+.task-action-sheet,
+.task-action-sheet__backdrop {
+  display: none;
+}
+
+@media (max-width: 680px) {
+  /* Filter chips: one deliberate, touch-friendly horizontal rail. */
+  #tasksPanel .filter-tabs {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    padding: 2px 2px 7px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #tasksPanel .filter-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  #tasksPanel .filter-tab,
+  #tasksPanel .filter-tab:last-child {
+    grid-column: auto;
+    width: auto;
+    min-width: max-content;
+    min-height: 42px;
+    padding-inline: 16px;
+    scroll-snap-align: start;
+  }
+
+  #tasksPanel .toolbar-actions {
+    gap: 10px;
+  }
+
+  #tasksPanel .secondary-button {
+    min-height: 48px;
+    border-radius: 12px;
+    font-size: 15px;
+  }
+
+  /* Read-only card presentation; editing lives in the bottom sheet. */
+  #tasksPanel .task-list,
+  .tasks-panel--full .task-list {
+    gap: 10px;
+    padding: 10px 0 0;
+    overflow: visible;
+    border: 0 !important;
+    background: transparent !important;
+  }
+
+  #tasksPanel .task-list::before {
+    display: none;
+  }
+
+  #tasksPanel .task-item,
+  .tasks-panel--full .task-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: max-content max-content max-content minmax(0, 1fr);
+    grid-template-areas:
+      "main main main more"
+      "category status priority priority"
+      "date date date date"
+      "description description description description";
+    gap: 10px 9px;
+    padding: 16px;
+    overflow: visible;
+    border: 1px solid var(--color-border);
+    border-radius: 15px;
+    background: var(--color-surface);
+    box-shadow: 0 5px 18px rgba(54, 35, 25, 0.07);
+  }
+
+  #tasksPanel .task-item__main {
+    gap: 12px;
+    min-height: 32px;
+  }
+
+  #tasksPanel .task-item__title {
+    font-size: 14px;
+    font-weight: 650;
+  }
+
+  #tasksPanel .task-checkbox {
+    width: 27px;
+    height: 27px;
+    border-radius: 7px;
+  }
+
+  #tasksPanel .badge-select {
+    width: auto;
+    max-width: 112px;
+    min-height: 34px;
+    padding: 7px 10px;
+    border: 0;
+    border-radius: 8px;
+    background-image: none !important;
+    font-size: 11px;
+    text-overflow: ellipsis;
+    pointer-events: none;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  #tasksPanel .task-date {
+    min-height: 37px;
+    padding: 10px 2px 8px;
+    border: 0;
+    border-bottom: 1px solid var(--color-border);
+    border-radius: 0;
+    background: transparent;
+    font-size: 12px;
+  }
+
+  #tasksPanel .task-description__trigger {
+    min-height: 28px;
+    padding: 2px;
+    border: 0;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  #tasksPanel .task-description__tooltip {
+    display: none !important;
+  }
+
+  #tasksPanel .task-actions {
+    display: none;
+  }
+
+  #tasksPanel .task-more-button {
+    grid-area: more;
+    display: grid;
+    place-items: center;
+    justify-self: end;
+    width: 38px;
+    height: 38px;
+    margin: -3px -7px 0 0;
+    border: 0;
+    border-radius: 9px;
+    color: var(--color-text);
+    background: transparent;
+    font-size: 20px;
+  }
+
+  #tasksPanel .task-more-button:active {
+    background: var(--color-surface-soft);
+  }
+
+  #tasksPanel .task-action-sheet__backdrop {
+    position: fixed;
+    z-index: 998;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: rgba(18, 14, 12, 0.58);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 180ms ease, visibility 180ms ease;
+  }
+
+  #tasksPanel .task-action-sheet {
+    position: fixed;
+    z-index: 999;
+    right: 10px;
+    bottom: max(10px, env(safe-area-inset-bottom));
+    left: 10px;
+    display: grid;
+    gap: 3px;
+    padding: 10px 12px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    color: var(--color-text);
+    background: var(--color-surface);
+    box-shadow: 0 -18px 60px rgba(21, 15, 12, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(calc(100% + 30px));
+    transition: transform 220ms ease, opacity 180ms ease, visibility 220ms ease;
+  }
+
+  #tasksPanel .task-action-sheet__handle {
+    width: 44px;
+    height: 5px;
+    margin: 0 auto 6px;
+    border-radius: 999px;
+    background: var(--color-text-muted);
+    opacity: 0.5;
+  }
+
+  #tasksPanel .task-action-sheet > strong {
+    padding: 2px 12px 8px;
+    font-size: 13px;
+  }
+
+  #tasksPanel .task-action-sheet > button {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    min-height: 50px;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: 10px;
+    color: inherit;
+    background: transparent;
+    font-size: 15px;
+    text-align: left;
+  }
+
+  #tasksPanel .task-action-sheet > button:active {
+    background: var(--color-surface-soft);
+  }
+
+  #tasksPanel .task-action-sheet > button i {
+    width: 24px;
+    font-size: 19px;
+  }
+
+  #tasksPanel .task-action-sheet .task-action-sheet__delete {
+    color: var(--color-red);
+  }
+
+  #tasksPanel .task-item--actions-open .task-action-sheet__backdrop,
+  #tasksPanel .task-item--actions-open .task-action-sheet {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  #tasksPanel .task-item--actions-open .task-action-sheet {
+    transform: translateY(0);
+  }
+
+  #tasksPanel .task-footer,
+  .tasks-panel--full .task-footer {
+    border: 0;
+    background: transparent;
+  }
+
+  /* Add/edit task uses the same mobile bottom-sheet language. */
+  .modal {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .modal__dialog {
+    width: 100%;
+    max-width: none;
+    max-height: min(88dvh, 720px);
+    padding: 13px 16px max(16px, env(safe-area-inset-bottom));
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 22px 22px 0 0;
+    transform: translateY(100%);
+  }
+
+  .modal__dialog::before {
+    display: block;
+    width: 44px;
+    height: 5px;
+    margin: 0 auto 10px;
+    border-radius: 999px;
+    background: var(--color-text-muted);
+    content: "";
+    opacity: 0.45;
+  }
+
+  .modal--open .modal__dialog {
+    transform: translateY(0);
+  }
+
+  .modal__header {
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .modal__header h2 {
+    font-size: 18px;
+  }
+
+  .task-form__actions .cancel-button {
+    display: none;
+  }
+
+  .task-form__actions .primary-button {
+    min-height: 46px;
+  }
+}
+
+@media (max-width: 370px) {
+  #tasksPanel .task-item,
+  .tasks-panel--full .task-item {
+    grid-template-columns: max-content max-content minmax(0, 1fr);
+    grid-template-areas:
+      "main main more"
+      "category status status"
+      "priority priority priority"
+      "date date date"
+      "description description description";
+    padding: 14px 12px;
+  }
+}
+
+
+/* Keep device-specific corrections last in the cascade. */
+@media (max-width: 680px) {
+  #tasksPanel .filter-tabs {
+    box-sizing: border-box;
+    flex-wrap: nowrap;
+    width: calc(100vw - 32px);
+    max-width: calc(100vw - 32px);
+    margin-inline: auto;
+    padding: 3px 16px 9px 0;
+    overflow-x: scroll !important;
+    overflow-y: hidden !important;
+    scroll-padding-inline: 0 16px;
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #tasksPanel .filter-tab {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: max-content;
+    touch-action: pan-y;
+  }
+
+  #tasksPanel .task-item,
+  .tasks-panel--full .task-item {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) 38px;
+    grid-template-areas:
+      "main main main more"
+      "category status priority priority"
+      "date date date date"
+      "description description description description";
+  }
+
+  #tasksPanel .task-item__main {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  #tasksPanel .category-badge,
+  #tasksPanel .status-badge,
+  #tasksPanel .priority-badge {
+    box-sizing: border-box;
+    justify-self: stretch;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    height: 34px;
+    padding: 0 8px !important;
+    overflow: hidden;
+    border-radius: 8px;
+    background-image: none !important;
+    font-family: inherit;
+    font-size: 11px !important;
+    line-height: 34px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -webkit-text-fill-color: currentColor;
+  }
+}
+
+@media (max-width: 370px) {
+  #tasksPanel .task-item,
+  .tasks-panel--full .task-item {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) 36px;
+    grid-template-areas:
+      "main main main more"
+      "category status priority priority"
+      "date date date date"
+      "description description description description";
+  }
+
+  #tasksPanel .category-badge,
+  #tasksPanel .status-badge,
+  #tasksPanel .priority-badge {
+    padding-inline: 5px !important;
+    font-size: 10px !important;
+  }
+}
+
+
