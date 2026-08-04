@@ -868,6 +868,153 @@ taskCheckbox.addEventListener(
     deleteButton
   );
 
+  /* Mobile action menu. Desktop keeps the existing inline actions. */
+  const moreButton =
+    document.createElement("button");
+
+  moreButton.type = "button";
+  moreButton.classList.add(
+    "task-more-button"
+  );
+  moreButton.setAttribute(
+    "aria-label",
+    "Open task actions"
+  );
+  moreButton.setAttribute(
+    "aria-expanded",
+    "false"
+  );
+  moreButton.innerHTML =
+    '<i class="bi bi-three-dots-vertical"></i>';
+
+  const actionBackdrop =
+    document.createElement("button");
+
+  actionBackdrop.type = "button";
+  actionBackdrop.classList.add(
+    "task-action-sheet__backdrop"
+  );
+  actionBackdrop.setAttribute(
+    "aria-label",
+    "Close task actions"
+  );
+
+  const actionSheet =
+    document.createElement("div");
+
+  actionSheet.classList.add(
+    "task-action-sheet"
+  );
+  actionSheet.setAttribute(
+    "role",
+    "menu"
+  );
+  actionSheet.setAttribute(
+    "aria-label",
+    `Actions for ${task.title}`
+  );
+  actionSheet.innerHTML = `
+    <span class="task-action-sheet__handle" aria-hidden="true"></span>
+    <strong>Task actions</strong>
+    <button type="button" data-task-sheet-action="edit" role="menuitem">
+      <i class="bi bi-pencil"></i><span>Edit task</span>
+    </button>
+    <button type="button" data-task-sheet-action="duplicate" role="menuitem">
+      <i class="bi bi-copy"></i><span>Duplicate</span>
+    </button>
+    <button type="button" data-task-sheet-action="archive" role="menuitem">
+      <i class="bi ${taskIsArchived ? "bi-arrow-counterclockwise" : "bi-archive"}"></i>
+      <span>${taskIsArchived ? "Restore" : "Archive"}</span>
+    </button>
+    <button class="task-action-sheet__delete" type="button" data-task-sheet-action="delete" role="menuitem">
+      <i class="bi bi-trash3"></i><span>Delete</span>
+    </button>
+  `;
+
+  function closeActionSheet() {
+    taskItem.classList.remove(
+      "task-item--actions-open"
+    );
+    moreButton.setAttribute(
+      "aria-expanded",
+      "false"
+    );
+  }
+
+  moreButton.addEventListener(
+    "click",
+    function () {
+      document
+        .querySelectorAll(
+          ".task-item--actions-open"
+        )
+        .forEach(function (openTask) {
+          if (openTask !== taskItem) {
+            openTask.classList.remove(
+              "task-item--actions-open"
+            );
+          }
+        });
+
+      const shouldOpen =
+        !taskItem.classList.contains(
+          "task-item--actions-open"
+        );
+
+      taskItem.classList.toggle(
+        "task-item--actions-open",
+        shouldOpen
+      );
+      moreButton.setAttribute(
+        "aria-expanded",
+        String(shouldOpen)
+      );
+    }
+  );
+
+  actionBackdrop.addEventListener(
+    "click",
+    closeActionSheet
+  );
+
+  actionSheet.addEventListener(
+    "click",
+    function (event) {
+      const actionButton =
+        event.target.closest(
+          "[data-task-sheet-action]"
+        );
+
+      if (!actionButton) {
+        return;
+      }
+
+      const action =
+        actionButton.dataset.taskSheetAction;
+
+      closeActionSheet();
+
+      if (action === "edit") {
+        editButton.click();
+      } else if (action === "archive") {
+        archiveButton.click();
+      } else if (action === "delete") {
+        deleteButton.click();
+      } else if (action === "duplicate") {
+        const createdAt = Date.now();
+        state.tasks.push({
+          ...task,
+          id: createdAt,
+          createdAt,
+          title: `${task.title} (copy)`,
+          archived: false,
+        });
+        state.currentPage = 1;
+        refreshTaskViews();
+      }
+    }
+  );
+
 
   taskItem.append(
     taskMain,
@@ -876,7 +1023,10 @@ taskCheckbox.addEventListener(
     taskPriority,
     taskDate,
     taskDescription,
-    taskActions
+    taskActions,
+    moreButton,
+    actionBackdrop,
+    actionSheet
   );
 
 
